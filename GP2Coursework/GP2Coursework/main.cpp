@@ -60,6 +60,7 @@ GameObject *mainCamera;
 vec4 ambientLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 GameObject * mainLight;
 
+//boolean for triggering debug camera
 bool debug = false;
 
 //Global functions
@@ -253,6 +254,9 @@ void render()
 void update()
 {
 	//projMatrix = glm::perspective(45.0f, (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 100.0f);
+
+	//TODO: could changing lookAt in camera go anywhere else?
+
 	for (auto iter = displayList.begin(); iter != displayList.end(); iter++)
 	{
 		(*iter)->update();
@@ -353,6 +357,15 @@ int main(int argc, char * arg[])
 				//set our boolean which controls the game loop to false
 				running = false;
 			}
+			//checks for mouse motion
+			else if (event.type == SDL_MOUSEMOTION)
+			{
+
+				//event.motion...
+
+				//cout << (float)tempCameraLookAt[0] << " " << (float)tempCameraLookAt[1] << " " << (float)tempCameraLookAt[2] << endl;
+
+			}	
 			//check for key held down by user
 			else if (event.type == SDL_KEYDOWN)
 			{
@@ -362,7 +375,7 @@ int main(int argc, char * arg[])
 				//if left key pressed
 				case SDLK_LEFT:
 				{
-					if (debug = true)
+					if (debug == true)
 					{
 						vec3 camPosition = mainCamera->getTransform()->getPosition();
 						camPosition[0] -= 0.1f;
@@ -370,13 +383,14 @@ int main(int argc, char * arg[])
 						Transform *t = new Transform();
 						t->setPosition(camPosition[0], camPosition[1], camPosition[2]);
 						mainCamera->setTransform(t);
-						break;
+						
 					}
+					break;
 				}
 				//if right key pressed
 				case SDLK_RIGHT:
 				{
-					if (debug = true)
+					if (debug == true)
 					{
 						vec3 camPosition = mainCamera->getTransform()->getPosition();
 						camPosition[0] += 0.1f;
@@ -384,13 +398,14 @@ int main(int argc, char * arg[])
 						Transform *t = new Transform();
 						t->setPosition(camPosition[0], camPosition[1], camPosition[2]);
 						mainCamera->setTransform(t);
-						break;
+						
 					}
+					break;
 				}
 				//if up key pressed
 				case SDLK_UP:
 				{
-					if (debug = true)
+					if (debug == true)
 					{
 						vec3 camPosition = mainCamera->getTransform()->getPosition();
 						camPosition[1] += 0.1f;
@@ -398,26 +413,29 @@ int main(int argc, char * arg[])
 						Transform *t = new Transform();
 						t->setPosition(camPosition[0], camPosition[1], camPosition[2]);
 						mainCamera->setTransform(t);
-						break;
+						
 					}
+					break;
 				}
 				//if down key pressed
 				case SDLK_DOWN:
 				{
-					if (debug = true)
+					if (debug == true)
 					{
 						vec3 camPosition = mainCamera->getTransform()->getPosition();
 						camPosition[1] -= 0.1f;
-						cout << camPosition[1] << endl;
+						cout << camPosition[0] << endl;
 						Transform *t = new Transform();
 						t->setPosition(camPosition[0], camPosition[1], camPosition[2]);
 						mainCamera->setTransform(t);
-						break;
+						
 					}
+					break;
 				}
 				case SDLK_d:
 				{
-					debug = true;
+					cout << "Debug being triggered" << endl;
+					debug = !debug;
 					break;
 				}
 				default:
