@@ -12,6 +12,8 @@
 #include <gl\GLU.h>
 #include <SDL_ttf.h>
 
+using namespace std;
+
 //maths headers
 #include <glm/glm.hpp>
 using glm::mat4;
@@ -51,105 +53,6 @@ SDL_GLContext glcontext = NULL;
 const int WINDOW_WIDTH = 640;
 const int WINDOW_HEIGHT = 480;
 bool running = true;
-
-/*float triangleData[] = { 0.0f, 1.0f, 0.0f, // Top
--1.0f, -1.0f, 0.0f, // Bottom Left
-1.0f, -1.0f, 0.0f }; //Bottom Right
-*/
-
-/*Vertex triangleData[] = { { 0.0f, 1.0f, 0.0f, //x,y,z
-1.0f, 0.0f, 0.0f, 1.0f }, //r,g,b,a
-
-{ -1.0f, -1.0f, 0.0f, //x,y,z
-0.0f, 1.0f, 0.0f, 1.0f }, //r,g,b,a
-
-{ 1.0f, -1.0f, 0.0f, //x,y,z
-0.0f, 0.0f, 1.0f, 1.0f } }; //r,g,b,a
-*/
-
-/*
-Vertex triangleData[] = {
-	//Front
-		{ vec3(-0.5f, 0.5f, 0.5f), vec2(0.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
-
-		{ vec3(-0.5f, -0.5f, 0.5f), vec2(0.0f, 1.0f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
-
-		{ vec3(0.5f, -0.5f, 0.5f), vec2(1.0f, 1.0f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
-
-		{ vec3(0.5f, 0.5f, 0.5f), vec2(1.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
-
-		//Back
-		{ vec3(-0.5f, 0.5f, -0.5f), vec2(0.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
-
-		{ vec3(-0.5f, -0.5f, -0.5f), vec2(0.0f, 1.0f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
-
-		{ vec3(0.5f, -0.5f, -0.5f), vec2(1.0f, 1.0f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
-
-		{ vec3(0.5f, 0.5f, -0.5f), vec2(1.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
-
-		//Left
-		{ vec3(-0.5f, 0.5f, -0.5f), vec2(0.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
-
-		{ vec3(-0.5f, -0.5f, -0.5f), vec2(0.0f, 1.0f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
-
-		{ vec3(-0.5f, -0.5f, 0.5f), vec2(1.0f, 1.0f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
-
-		{ vec3(-0.5f, 0.5f, 0.5f), vec2(1.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
-
-		//Right
-		{ vec3(0.5f, 0.5f, 0.5f), vec2(0.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
-
-		{ vec3(0.5f, -0.5f, 0.5f), vec2(0.0f, 1.0f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
-
-		{ vec3(0.5f, -0.5f, -0.5f), vec2(1.0f, 1.0f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
-
-		{ vec3(0.5f, 0.5f, -0.5f), vec2(1.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
-
-		//Top
-		{ vec3(-0.5f, 0.5f, -0.5f), vec2(0.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
-
-		{ vec3(-0.5f, 0.5f, 0.5f), vec2(0.0f, 1.0f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
-
-		{ vec3(0.5f, 0.5f, 0.5f), vec2(1.0f, 1.0f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
-
-		{ vec3(0.5f, 0.5f, -0.5f), vec2(1.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
-
-		//Bottom
-		{ vec3(-0.5f, -0.5f, 0.5f), vec2(0.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
-
-		{ vec3(-0.5f, -0.5f, -0.5f), vec2(0.0f, 1.0f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
-
-		{ vec3(0.5f, -0.5f, -0.5f), vec2(1.0f, 1.0f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
-
-		{ vec3(0.5f, -0.5f, 0.5f), vec2(1.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
-};
-
-GLuint indices[] = {
-	//Front
-	0, 1, 2,
-	0, 3, 2,
-
-	//Left
-	4, 5, 1,
-	4, 1, 0,
-
-	//Right
-	3, 7, 2,
-	7, 6, 2,
-
-	//Bottom
-	1, 5, 2,
-	6, 2, 1,
-
-	//Top
-	5, 0, 7,
-	5, 7, 3,
-
-	//Back
-	4, 5, 6,
-	4, 7, 6
-};
-*/
 
 vector<GameObject*> displayList;
 GameObject *mainCamera;
@@ -382,23 +285,6 @@ void initialise()
 	mainLight->setLight(light);
 	displayList.push_back(mainLight);
 	
-	GameObject * cube = new GameObject();
-	cube->setName("Cube");
-	
-	Transform *transform = new Transform();
-	transform->setPosition(0.0f, 0.0f, 0.0f);
-	cube->setTransform(transform);
-	
-	Material * material = new Material();
-	std::string vsPath = ASSET_PATH + SHADER_PATH + "/specularVS.glsl";
-	std::string fsPath = ASSET_PATH + SHADER_PATH + "/specularFS.glsl";
-	material->loadShader(vsPath, fsPath);
-	cube->setMaterial(material);
-	
-	Mesh * mesh = new Mesh();
-	cube->setMesh(mesh);
-	
-	displayList.push_back(cube);
 	
 	for (auto iter = displayList.begin(); iter != displayList.end(); iter++)
 	{
@@ -426,11 +312,10 @@ void initialise()
 
 		go->getChild(i)->setMaterial(material);
 	}
+	
 	go->getTransform()->setPosition(2.0f, -2.0f, -6.0f);
 	displayList.push_back(go);
 	
-	//mesh->copyVertexData(8, sizeof(Vertex), (void**)(triangleData));
-	//mesh->copyIndexData(36, sizeof(int), (void**)(indices));
 }
 
 //Main Method - Entry Point
@@ -450,8 +335,6 @@ int main(int argc, char * arg[])
 
 	//Call our InitOpenGL Function
 	initOpenGL();
-	//Call our initGeometry Function
-	//initGeometry();
 	//Set our viewport
 	setViewport(WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -467,6 +350,60 @@ int main(int argc, char * arg[])
 			{
 				//set our boolean which controls the game loop to false
 				running = false;
+			}
+			//check for key held down by user
+			else if (event.type == SDL_KEYDOWN)
+			{
+				//checks to see which key was held down
+				switch (event.key.keysym.sym)
+				{
+				//if left key pressed
+				case SDLK_LEFT:
+				{
+					vec3 camPosition = mainCamera->getTransform()->getPosition();
+					camPosition[0]-= 0.1f;
+					cout << camPosition[0] << endl;
+					Transform *t = new Transform();
+					t->setPosition(camPosition[0], camPosition[1], camPosition[2]);
+					mainCamera->setTransform(t);
+					break;
+				}
+				//if right key pressed
+				case SDLK_RIGHT:
+				{
+					vec3 camPosition = mainCamera->getTransform()->getPosition();
+					camPosition[0] += 0.1f;
+					cout << camPosition[0] << endl;
+					Transform *t = new Transform();
+					t->setPosition(camPosition[0], camPosition[1], camPosition[2]);
+					mainCamera->setTransform(t);
+					break;
+				}
+				//if up key pressed
+				case SDLK_UP:
+				{
+					vec3 camPosition = mainCamera->getTransform()->getPosition();
+					camPosition[1] += 0.1f;
+					cout << camPosition[1] << endl;
+					Transform *t = new Transform();
+					t->setPosition(camPosition[0], camPosition[1], camPosition[2]);
+					mainCamera->setTransform(t);
+					break;
+				}
+				//if down key pressed
+				case SDLK_DOWN:
+				{
+					vec3 camPosition = mainCamera->getTransform()->getPosition();
+					camPosition[1] -= 0.1f;
+					cout << camPosition[1] << endl;
+					Transform *t = new Transform();
+					t->setPosition(camPosition[0], camPosition[1], camPosition[2]);
+					mainCamera->setTransform(t);
+					break;
+				}
+				default:
+					break;
+				}
 			}
 		}
 
