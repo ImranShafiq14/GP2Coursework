@@ -60,6 +60,8 @@ GameObject *mainCamera;
 vec4 ambientLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 GameObject * mainLight;
 
+bool debug = false;
+
 //Global functions
 void InitWindow(int width, int height, bool fullscreen)
 {
@@ -360,45 +362,62 @@ int main(int argc, char * arg[])
 				//if left key pressed
 				case SDLK_LEFT:
 				{
-					vec3 camPosition = mainCamera->getTransform()->getPosition();
-					camPosition[0]-= 0.1f;
-					cout << camPosition[0] << endl;
-					Transform *t = new Transform();
-					t->setPosition(camPosition[0], camPosition[1], camPosition[2]);
-					mainCamera->setTransform(t);
-					break;
+					if (debug = true)
+					{
+						vec3 camPosition = mainCamera->getTransform()->getPosition();
+						camPosition[0] -= 0.1f;
+						cout << camPosition[0] << endl;
+						Transform *t = new Transform();
+						t->setPosition(camPosition[0], camPosition[1], camPosition[2]);
+						mainCamera->setTransform(t);
+						break;
+					}
 				}
 				//if right key pressed
 				case SDLK_RIGHT:
 				{
-					vec3 camPosition = mainCamera->getTransform()->getPosition();
-					camPosition[0] += 0.1f;
-					cout << camPosition[0] << endl;
-					Transform *t = new Transform();
-					t->setPosition(camPosition[0], camPosition[1], camPosition[2]);
-					mainCamera->setTransform(t);
-					break;
+					if (debug = true)
+					{
+						vec3 camPosition = mainCamera->getTransform()->getPosition();
+						camPosition[0] += 0.1f;
+						cout << camPosition[0] << endl;
+						Transform *t = new Transform();
+						t->setPosition(camPosition[0], camPosition[1], camPosition[2]);
+						mainCamera->setTransform(t);
+						break;
+					}
 				}
 				//if up key pressed
 				case SDLK_UP:
 				{
-					vec3 camPosition = mainCamera->getTransform()->getPosition();
-					camPosition[1] += 0.1f;
-					cout << camPosition[1] << endl;
-					Transform *t = new Transform();
-					t->setPosition(camPosition[0], camPosition[1], camPosition[2]);
-					mainCamera->setTransform(t);
-					break;
+					if (debug = true)
+					{
+						vec3 camPosition = mainCamera->getTransform()->getPosition();
+						camPosition[1] += 0.1f;
+						cout << camPosition[1] << endl;
+						Transform *t = new Transform();
+						t->setPosition(camPosition[0], camPosition[1], camPosition[2]);
+						mainCamera->setTransform(t);
+						break;
+					}
 				}
 				//if down key pressed
 				case SDLK_DOWN:
 				{
-					vec3 camPosition = mainCamera->getTransform()->getPosition();
-					camPosition[1] -= 0.1f;
-					cout << camPosition[1] << endl;
-					Transform *t = new Transform();
-					t->setPosition(camPosition[0], camPosition[1], camPosition[2]);
-					mainCamera->setTransform(t);
+					if (debug = true)
+					{
+						vec3 camPosition = mainCamera->getTransform()->getPosition();
+						camPosition[1] -= 0.1f;
+						cout << camPosition[1] << endl;
+						Transform *t = new Transform();
+						t->setPosition(camPosition[0], camPosition[1], camPosition[2]);
+						mainCamera->setTransform(t);
+						break;
+					}
+				}
+				case SDLK_d:
+				{
+					debug = true;
 					break;
 				}
 				default:
