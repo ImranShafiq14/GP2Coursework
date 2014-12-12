@@ -31,6 +31,7 @@ using glm::vec4;
 #include "Transform.h"
 #include "Component.h"
 #include "Light.h"
+#include "Timer.h"
 
 #ifdef _DEBUG && WIN32
 const std::string ASSET_PATH = "../assets";
