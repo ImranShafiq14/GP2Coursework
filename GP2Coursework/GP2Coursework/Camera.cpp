@@ -20,6 +20,10 @@ Camera::~Camera()
 
 }
 
+vec3 Camera::getLookAt()
+{
+	return m_LookAt;
+}
 
 void Camera::setLookAt(float x, float y, float z)
 {

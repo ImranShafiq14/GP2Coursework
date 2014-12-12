@@ -24,6 +24,8 @@ public:
 	void setNearClip(float nearClip);
 	void setFarClip(float farClip);
 
+	vec3 getLookAt();
+
 	mat4 getViewMatrix();
 	mat4 getProjectMatrix();
 	void update();

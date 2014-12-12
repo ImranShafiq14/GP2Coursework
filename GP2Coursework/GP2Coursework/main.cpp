@@ -60,7 +60,7 @@ GameObject *mainCamera;
 vec4 ambientLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 GameObject * mainLight;
 
-//boolean for triggering debug camera
+//boolean for triggering debug camera - RT
 bool debug = false;
 
 //Global functions
@@ -253,9 +253,6 @@ void render()
 //Function to update game state
 void update()
 {
-	//projMatrix = glm::perspective(45.0f, (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 100.0f);
-
-	//TODO: could changing lookAt in camera go anywhere else?
 
 	for (auto iter = displayList.begin(); iter != displayList.end(); iter++)
 	{
@@ -346,6 +343,9 @@ int main(int argc, char * arg[])
 
 	initialise();
 
+	//sets mouse cursor to centre of window - RT
+	SDL_WarpMouseInWindow(window, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+
 	SDL_Event event;
 	while (running)
 	{
@@ -357,84 +357,104 @@ int main(int argc, char * arg[])
 				//set our boolean which controls the game loop to false
 				running = false;
 			}
-			//checks for mouse motion
+			//checks for mouse motion - RT
 			else if (event.type == SDL_MOUSEMOTION)
 			{
 
-				//event.motion...
+				float cameraMoveLookX = ((float)event.motion.x - (WINDOW_WIDTH/2))/20.0f;
+				float cameraMoveLookY = ((float)event.motion.y - (WINDOW_HEIGHT/2))/20.0f;
 
-				//cout << (float)tempCameraLookAt[0] << " " << (float)tempCameraLookAt[1] << " " << (float)tempCameraLookAt[2] << endl;
+				cout << cameraMoveLookX << endl; //for debugging purposes only - RT
+				cout << cameraMoveLookY << endl; //for debugging purposes only - RT
+
+				vec3 camLookAt = mainCamera->getCamera()->getLookAt();
+
+				mainCamera->getCamera()->setLookAt(camLookAt.x + cameraMoveLookX, camLookAt.y + cameraMoveLookY,camLookAt.z);
 
 			}	
-			//check for key held down by user
+			//check for key held down by user - RT
 			else if (event.type == SDL_KEYDOWN)
 			{
-				//checks to see which key was held down
+				//checks to see which key was held down - RT
 				switch (event.key.keysym.sym)
 				{
-				//if left key pressed
-				case SDLK_LEFT:
+				//if left key pressed - RT
+				case SDLK_a:
 				{
+					
+					vec3 camPosition = mainCamera->getTransform()->getPosition();
+					camPosition.x -= 0.1f;
+					cout << camPosition.x << endl; //for debugging purposes only - RT
+					Transform *t = new Transform();
+					t->setPosition(camPosition.x, camPosition.y, camPosition.z);
+					mainCamera->setTransform(t);
+						
+					break;
+				}
+				//if right key pressed - RT
+				case SDLK_d:
+				{
+					
+					vec3 camPosition = mainCamera->getTransform()->getPosition();
+					camPosition.x += 0.1f;
+					cout << camPosition.x << endl; //for debugging purposes only - RT
+					Transform *t = new Transform();
+					t->setPosition(camPosition.x, camPosition.y, camPosition.z);
+					mainCamera->setTransform(t);
+						
+					break;
+				}
+				//if up key pressed - RT
+				case SDLK_w:
+				{
+					//only available to debug camera: player shouldn't be able to
+					//"fly" - should be constrained to ground - RT
 					if (debug == true)
 					{
 						vec3 camPosition = mainCamera->getTransform()->getPosition();
-						camPosition[0] -= 0.1f;
-						cout << camPosition[0] << endl;
+						camPosition.y += 0.1f;
+						cout << camPosition.y << endl; //for debugging purposes only - RT
 						Transform *t = new Transform();
-						t->setPosition(camPosition[0], camPosition[1], camPosition[2]);
+						t->setPosition(camPosition.x, camPosition.y, camPosition.z);
 						mainCamera->setTransform(t);
 						
 					}
-					break;
-				}
-				//if right key pressed
-				case SDLK_RIGHT:
-				{
-					if (debug == true)
+					else
 					{
 						vec3 camPosition = mainCamera->getTransform()->getPosition();
-						camPosition[0] += 0.1f;
-						cout << camPosition[0] << endl;
+						camPosition.z += 0.1f;
+						cout << camPosition.z << endl; //for debugging purposes only - RT
 						Transform *t = new Transform();
-						t->setPosition(camPosition[0], camPosition[1], camPosition[2]);
+						t->setPosition(camPosition.x, camPosition.y, camPosition.z);
 						mainCamera->setTransform(t);
-						
 					}
 					break;
 				}
-				//if up key pressed
-				case SDLK_UP:
+				//if down key pressed - RT
+				case SDLK_s:
 				{
-					if (debug == true)
-					{
-						vec3 camPosition = mainCamera->getTransform()->getPosition();
-						camPosition[1] += 0.1f;
-						cout << camPosition[1] << endl;
-						Transform *t = new Transform();
-						t->setPosition(camPosition[0], camPosition[1], camPosition[2]);
-						mainCamera->setTransform(t);
-						
-					}
-					break;
-				}
-				//if down key pressed
-				case SDLK_DOWN:
-				{
+					//only available to debug camera: player shouldn't be able to 
+					//"fly" and/or "go through" ground - RT
 					if (debug == true)
 					{
 						vec3 camPosition = mainCamera->getTransform()->getPosition();
 						camPosition[1] -= 0.1f;
-						cout << camPosition[0] << endl;
+						cout << camPosition.x << endl; //for debugging purposes only - RT
 						Transform *t = new Transform();
-						t->setPosition(camPosition[0], camPosition[1], camPosition[2]);
+						t->setPosition(camPosition.x, camPosition.y, camPosition.z);
 						mainCamera->setTransform(t);
 						
 					}
+					else
+					{
+
+					}
 					break;
 				}
-				case SDLK_d:
+				//if r key is pressed
+				case SDLK_r:
 				{
-					cout << "Debug being triggered" << endl;
+					cout << "Debug mode altered" << endl; //for debugging purposes only - RT
 					debug = !debug;
 					break;
 				}
