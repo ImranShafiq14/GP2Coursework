@@ -29,6 +29,8 @@ public:
 	mat4 getViewMatrix();
 	mat4 getProjectMatrix();
 	void update();
+
+	void reset(); //RT
 private:
 	vec3 m_LookAt;
 	vec3 m_Up;

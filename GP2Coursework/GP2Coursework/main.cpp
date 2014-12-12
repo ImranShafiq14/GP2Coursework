@@ -447,6 +447,12 @@ int main(int argc, char * arg[])
 					}
 					else
 					{
+						vec3 camPosition = mainCamera->getTransform()->getPosition();
+						camPosition.z -= 0.1f;
+						cout << camPosition.z << endl; //for debugging purposes only - RT
+						Transform *t = new Transform();
+						t->setPosition(camPosition.x, camPosition.y, camPosition.z);
+						mainCamera->setTransform(t);
 
 					}
 					break;
@@ -457,6 +463,12 @@ int main(int argc, char * arg[])
 					cout << "Debug mode altered" << endl; //for debugging purposes only - RT
 					debug = !debug;
 					break;
+				}
+				//if p key is pressed
+				case SDLK_p:
+				{
+					cout << "Camera reset triggered" << endl; //for debugging purposes only - RT
+					mainCamera->getCamera()->reset(); //resets lookAt value in camera - RT
 				}
 				default:
 					break;

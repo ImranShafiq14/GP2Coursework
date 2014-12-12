@@ -20,6 +20,14 @@ Camera::~Camera()
 
 }
 
+//RT
+void Camera::reset()
+{
+	m_LookAt = vec3(0.000f, 0.000f, 0.000f);
+	m_Up = vec3(0.0f, 1.0f, 0.0f);
+	
+}
+
 vec3 Camera::getLookAt()
 {
 	return m_LookAt;
