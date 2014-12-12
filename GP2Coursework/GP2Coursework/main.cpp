@@ -378,7 +378,7 @@ int main(int argc, char * arg[])
 				//checks to see which key was held down - RT
 				switch (event.key.keysym.sym)
 				{
-				//if left key pressed - RT
+				//if a key pressed - RT
 				case SDLK_a:
 				{
 					
@@ -391,7 +391,7 @@ int main(int argc, char * arg[])
 						
 					break;
 				}
-				//if right key pressed - RT
+				//if d key pressed - RT
 				case SDLK_d:
 				{
 					
@@ -404,7 +404,7 @@ int main(int argc, char * arg[])
 						
 					break;
 				}
-				//if up key pressed - RT
+				//if w key pressed - RT
 				case SDLK_w:
 				{
 					//only available to debug camera: player shouldn't be able to
@@ -430,7 +430,7 @@ int main(int argc, char * arg[])
 					}
 					break;
 				}
-				//if down key pressed - RT
+				//if s key pressed - RT
 				case SDLK_s:
 				{
 					//only available to debug camera: player shouldn't be able to 
