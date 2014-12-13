@@ -295,8 +295,9 @@ void initialise()
 		(*iter)->init();
 	}
 
-	std::string modelPath = ASSET_PATH + MODEL_PATH + "armoredrecon.fbx";
-	GameObject * go = loadFBXFromFile(modelPath);
+	//Changed Model loading variable for ArmoredRecon - IS
+	std::string armoredReconModel = ASSET_PATH + MODEL_PATH + "armoredrecon.fbx";
+	GameObject * go = loadFBXFromFile(armoredReconModel);
 	for (int i = 0; i < go->getChildCount(); i++)
 	{
 		Material * material = new Material();
@@ -317,7 +318,34 @@ void initialise()
 		go->getChild(i)->setMaterial(material);
 	}
 	
-	go->getTransform()->setPosition(2.0f, -2.0f, -6.0f);
+	go->getTransform()->setPosition(3.0f, -2.0f, -6.0f);
+	displayList.push_back(go);
+
+	//Loading of additional model (tank1) with textures - IS
+	std::string tank1Model = ASSET_PATH + MODEL_PATH + "Tank1.fbx";
+	go = loadFBXFromFile(tank1Model);
+	for (int i = 0; i < go->getChildCount(); i++)
+	{
+		Material * material = new Material();
+		material->init();
+		std::string vsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingVS.glsl";
+		std::string fsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingFS.glsl";
+		material->loadShader(vsPath, fsPath);
+
+		std::string diffTexturePath = ASSET_PATH + TEXTURE_PATH + "/Tank1DF.png";
+		material->loadDiffuseMap(diffTexturePath);
+
+		std::string specTexturePath = ASSET_PATH + TEXTURE_PATH + "/Tank1_S.png";
+		material->loadSpecularMap(specTexturePath);
+
+		std::string bumpTexturePath = ASSET_PATH + TEXTURE_PATH + "/Tank1_N.png";
+		material->loadBumpMap(bumpTexturePath);
+
+		go->getChild(i)->setMaterial(material);
+	}
+
+	go->getTransform()->setPosition(-3.0f, -2.0f, -6.0f);
+	go->getTransform()->setRotation(0.0f, 90.0f, 0.0f);
 	displayList.push_back(go);
 	
 }

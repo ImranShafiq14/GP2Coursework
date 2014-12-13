@@ -31,8 +31,8 @@ void Transform::update()
 
 	if (m_Parent->getParent())
 	{
-		//m_Model = m_Parent->getParent()->getTransform()->getModel()*m_Model;
-		m_Model *= m_Parent->getTransform()->getModel();
+		m_Model = m_Parent->getParent()->getTransform()->getModel()*m_Model;
+		//m_Model *= m_Parent->getTransform()->getModel();
 	}
 }
 
