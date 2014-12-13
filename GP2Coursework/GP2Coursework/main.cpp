@@ -68,7 +68,7 @@ bool debug = false;
 void InitWindow(int width, int height, bool fullscreen)
 {
 	//Create a window 
-	window = SDL_CreateWindow("Lab 1",		//window title
+	window = SDL_CreateWindow("GP2 Coursework - The Average Joes",		//window title
 		SDL_WINDOWPOS_CENTERED,		//x position, centered
 		SDL_WINDOWPOS_CENTERED,		//y position, centered
 		width,				//width, in pixels
