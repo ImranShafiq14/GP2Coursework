@@ -409,9 +409,6 @@ int main(int argc, char * arg[])
 					float cameraMoveLookX = ((float)event.motion.x - (WINDOW_WIDTH / 2)) * timer->getDeltaTime();
 					float cameraMoveLookY = ((float)event.motion.y - (WINDOW_HEIGHT / 2)) * timer->getDeltaTime();
 
-					timer->stop(); //stops timer - RT
-					timer->reset(); //resets timer - RT
-
 					vec3 camLookAt = mainCamera->getCamera()->getLookAt();
 
 					mainCamera->getCamera()->setLookAt(camLookAt.x + cameraMoveLookX, camLookAt.y - cameraMoveLookY, camLookAt.z);
@@ -422,6 +419,8 @@ int main(int argc, char * arg[])
 					magnitude = 0.0f;
 				}
 
+				timer->stop(); //stops timer - RT
+				timer->reset(); //resets timer - RT
 				timer->start(); //restarts timer - RT
 			}	
 			//check for key held down by user - RT
