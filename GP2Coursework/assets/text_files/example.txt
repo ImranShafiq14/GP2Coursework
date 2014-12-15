@@ -1,7 +1,10 @@
-HELLO
-IS IT ME YOU'RE LOOKING FOR
-I CAN SEE IT IN YOUR EYES
-I CAN SEE IT IN YOUR SMILE
-1
+"armoredrecon.fbx"
+"bumpMappingVS.glsl"
+"bumpMappingFS.glsl"
+"armoredrecon_diff.png"
+"armoredrecon_spec.png"
+"armoredrecon_N.png"
+"3.0f"
+"-2.0f"
+"-6.0f"
 
-TEST TEST

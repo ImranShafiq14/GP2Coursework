@@ -1,6 +1,5 @@
 //Header files
 #include <iostream>
-#include <fstream>
 #include "Vertex.h"
 #include "Shader.h"
 #include "Texture.h"
@@ -301,22 +300,6 @@ void initialise()
 		(*iter)->init();
 	}
 
-	string line;
-	ifstream myfile(ASSET_PATH + TEXT_PATH + "/example.txt");
-	if (myfile.is_open())
-	{
-		while (getline(myfile, line))
-		{
-			if (line == "")
-			{
-				cout << "I FOUND A BLANK LINE" << endl;
-			}
-			cout << line << '\n';
-		}
-
-		myfile.close();
-	}
-	else cout << "Unable to open file";
 
 	//Changed Model loading variable for ArmoredRecon - IS
 	//std::string armoredReconModel = ASSET_PATH + MODEL_PATH + "armoredrecon.fbx";
