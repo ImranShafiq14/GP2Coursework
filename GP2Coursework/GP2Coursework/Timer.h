@@ -22,6 +22,13 @@ public:
 		return (float)m_CurrentFrameCount / m_DeltaTime;
 	}
 
+	float getDeltaTime()
+	{
+		return m_DeltaTime;
+	}
+
+	void reset();
+
 private:
 	int m_CurrentTime;
 	int m_LastTime;

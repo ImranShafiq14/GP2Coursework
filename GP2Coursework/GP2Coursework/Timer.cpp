@@ -11,8 +11,20 @@ Timer::Timer()
 	m_CurrentFrameCount = 0;
 }
 
+
 Timer::~Timer()
 {
+}
+
+//resets timer
+void Timer::reset()
+{
+	m_Paused = false;
+	m_Started = false;
+	m_CurrentTime = 0;
+	m_LastTime = 0;
+	m_DeltaTime = 0.0f;
+	m_CurrentFrameCount = 0;
 }
 
 void Timer::start()

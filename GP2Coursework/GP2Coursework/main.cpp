@@ -61,6 +61,8 @@ GameObject *mainCamera;
 vec4 ambientLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 GameObject * mainLight;
 
+Timer * timer; //pointer to Timer object - RT
+
 //boolean for triggering debug camera - RT
 bool debug = false;
 
@@ -259,6 +261,8 @@ void update()
 	{
 		(*iter)->update();
 	}
+
+	timer->update();
 }
 
 void initialise()
@@ -347,7 +351,10 @@ void initialise()
 	go->getTransform()->setPosition(-3.0f, -2.0f, -6.0f);
 	go->getTransform()->setRotation(0.0f, 90.0f, 0.0f);
 	displayList.push_back(go);
-	
+
+	timer = new Timer(); //creates Timer object - RT
+
+	timer->start(); //calls start function - RT
 }
 
 //Main Method - Entry Point
@@ -390,8 +397,11 @@ int main(int argc, char * arg[])
 			else if (event.type == SDL_MOUSEMOTION)
 			{
 
-				float cameraMoveLookX = ((float)event.motion.x - (WINDOW_WIDTH/2))/20.0f;
-				float cameraMoveLookY = ((float)event.motion.y - (WINDOW_HEIGHT/2))/20.0f;
+				float cameraMoveLookX = ((float)event.motion.x - (WINDOW_WIDTH/2)) * timer->getDeltaTime();
+				float cameraMoveLookY = ((float)event.motion.y - (WINDOW_HEIGHT/2)) * timer->getDeltaTime();
+
+				timer->reset(); //resets timer - RT
+				timer->start(); //restarts timer - RT
 
 				cout << cameraMoveLookX << endl; //for debugging purposes only - RT
 				cout << cameraMoveLookY << endl; //for debugging purposes only - RT
@@ -497,6 +507,8 @@ int main(int argc, char * arg[])
 				case SDLK_p:
 				{
 					cout << "Camera reset triggered" << endl; //for debugging purposes only - RT
+					timer->reset();
+					timer->start();
 					mainCamera->getCamera()->reset(); //resets lookAt value in camera - RT
 				}
 				default:
