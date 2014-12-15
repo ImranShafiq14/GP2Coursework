@@ -397,19 +397,32 @@ int main(int argc, char * arg[])
 			else if (event.type == SDL_MOUSEMOTION)
 			{
 
-				float cameraMoveLookX = ((float)event.motion.x - (WINDOW_WIDTH/2)) * timer->getDeltaTime();
-				float cameraMoveLookY = ((float)event.motion.y - (WINDOW_HEIGHT/2)) * timer->getDeltaTime();
+				float deadzone = 2.5f;
 
-				timer->reset(); //resets timer - RT
+				float magnitude = sqrt((float)event.motion.x * (float)event.motion.x + (float)event.motion.y * (float)event.motion.y);
+
+				cout << magnitude << endl;
+
+				if (magnitude > deadzone || (magnitude < -deadzone))
+				{
+
+					float cameraMoveLookX = ((float)event.motion.x - (WINDOW_WIDTH / 2)) * timer->getDeltaTime();
+					float cameraMoveLookY = ((float)event.motion.y - (WINDOW_HEIGHT / 2)) * timer->getDeltaTime();
+
+					timer->stop(); //stops timer - RT
+					timer->reset(); //resets timer - RT
+
+					vec3 camLookAt = mainCamera->getCamera()->getLookAt();
+
+					mainCamera->getCamera()->setLookAt(camLookAt.x + cameraMoveLookX, camLookAt.y - cameraMoveLookY, camLookAt.z);
+
+				}
+				else
+				{
+					magnitude = 0.0f;
+				}
+
 				timer->start(); //restarts timer - RT
-
-				cout << cameraMoveLookX << endl; //for debugging purposes only - RT
-				cout << cameraMoveLookY << endl; //for debugging purposes only - RT
-
-				vec3 camLookAt = mainCamera->getCamera()->getLookAt();
-
-				mainCamera->getCamera()->setLookAt(camLookAt.x + cameraMoveLookX, camLookAt.y + cameraMoveLookY,camLookAt.z);
-
 			}	
 			//check for key held down by user - RT
 			else if (event.type == SDL_KEYDOWN)
