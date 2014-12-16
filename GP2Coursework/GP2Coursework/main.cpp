@@ -32,6 +32,7 @@ using glm::vec4;
 #include "Component.h"
 #include "Light.h"
 #include "Timer.h"
+#include "SkyboxMaterial.h"
 
 #ifdef _DEBUG && WIN32
 const std::string ASSET_PATH = "../assets";
@@ -51,8 +52,8 @@ SDL_Window * window;
 SDL_GLContext glcontext = NULL;
 
 //Constants to control window creation
-const int WINDOW_WIDTH = 640;
-const int WINDOW_HEIGHT = 480;
+const int WINDOW_WIDTH = 1280;
+const int WINDOW_HEIGHT = 720;
 bool running = true;
 
 vector<GameObject*> displayList;
@@ -60,6 +61,8 @@ GameObject *mainCamera;
 
 vec4 ambientLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 GameObject * mainLight;
+
+GameObject * skyBox = NULL;
 
 Timer * timer; //pointer to Timer object - RT
 
@@ -82,6 +85,13 @@ void InitWindow(int width, int height, bool fullscreen)
 //Used to cleanup once we exit
 void CleanUp()
 {
+	if (skyBox)
+	{
+		skyBox->destroy();
+		delete skyBox;
+		skyBox = NULL;
+	}
+
 	auto iter = displayList.begin();
 	while (iter != displayList.end())
 	{
@@ -166,6 +176,82 @@ void setViewport(int width, int height)
 	glViewport(0, 0, (GLsizei)width, (GLsizei)height);
 }
 
+//Method for creating skybox - RT
+void createSkyBox()
+{
+	Vertex triangleData[] = {
+			{ vec3(-10.0f, 10.0f, 10.0f) },// Top Left
+			{ vec3(-10.0f, -10.0f, 10.0f) },// Bottom Left
+			{ vec3(10.0f, -10.0f, 10.0f) }, //Bottom Right
+			{ vec3(10.0f, 10.0f, 10.0f) },// Top Right
+
+
+			//back
+			{ vec3(-10.0f, 10.0f, -10.0f) },// Top Left
+			{ vec3(-10.0f, -10.0f, -10.0f) },// Bottom Left
+			{ vec3(10.0, -10.0f, -10.0f) }, //Bottom Right
+			{ vec3(10.0f, 10.0f, -10.0f) }// Top Right
+	};
+
+
+	GLuint indices[] = {
+		//front
+		0, 1, 2,
+		0, 3, 2,
+
+		//left
+		4, 5, 1,
+		4, 1, 0,
+
+		//right
+		3, 7, 2,
+		7, 6, 2,
+
+		//bottom
+		1, 5, 2,
+		6, 2, 1,
+
+		//top
+		5, 0, 7,
+		5, 7, 3,
+
+		//back
+		4, 5, 6,
+		4, 7, 6
+	};
+
+	Mesh * pMesh = new Mesh();
+	pMesh->init();
+
+	pMesh->copyVertexData(8, sizeof(Vertex), (void**)triangleData);
+	pMesh->copyIndexData(36, sizeof(int), (void**)indices);
+
+	Transform *t = new Transform();
+	t->setPosition(0.0f, 0.0f, 0.0f);
+	SkyBoxMaterial *material = new SkyBoxMaterial();
+	material->init();
+
+	string vsPath = ASSET_PATH + SHADER_PATH + "/skyVS.glsl";
+	string fsPath = ASSET_PATH + SHADER_PATH + "/skyFS.glsl";
+	material->loadShader(vsPath, fsPath);
+
+	string posZTexturename = ASSET_PATH + TEXTURE_PATH + "/CloudyLightRaysFront2048.png";
+	string negZTexturename = ASSET_PATH + TEXTURE_PATH + "/CloudyLightRaysBack2048.png";
+	string posXTexturename = ASSET_PATH + TEXTURE_PATH + "/CloudyLightRaysLeft2048.png";
+	string negXTexturename = ASSET_PATH + TEXTURE_PATH + "/CloudyLightRaysRight2048.png";
+	string posYTexturename = ASSET_PATH + TEXTURE_PATH + "/CloudyLightRaysUp2048.png";
+	string negYTexturename = ASSET_PATH + TEXTURE_PATH + "/CloudyLightRaysDown2048.png";
+
+	material->loadCubeTexture(posZTexturename, negZTexturename, posXTexturename, negXTexturename, posYTexturename, negYTexturename);
+
+	skyBox = new GameObject();
+	skyBox->setMaterial(material);
+	skyBox->setTransform(t);
+	skyBox->setMesh(pMesh);
+
+}
+
+
 void renderGameObject(GameObject *pObject)
 {
 	if (!pObject)
@@ -176,7 +262,7 @@ void renderGameObject(GameObject *pObject)
 	pObject->render();
 	Mesh * currentMesh = pObject->getMesh();
 	Transform * currentTransform = pObject->getTransform();
-	Material * currentMaterial = pObject->getMaterial();
+	Material * currentMaterial = (Material*)pObject->getMaterial();
 	
 	if (currentMesh && currentMaterial && currentTransform)
 	{
@@ -238,12 +324,45 @@ void renderGameObject(GameObject *pObject)
 	}
 }
 
+//renders skybox - slimmed down version of renderGameObject - RT
+void renderSkyBox()
+{
+	skyBox->render();
+
+	Mesh * currentMesh = skyBox->getMesh();
+	SkyBoxMaterial * currentMaterial = (SkyBoxMaterial*)skyBox->getMaterial();
+	if (currentMesh && currentMaterial)
+	{
+		Camera * cam = mainCamera->getCamera();
+
+		currentMaterial->bind();
+		currentMesh->Bind();
+
+		GLint cameraLocation = currentMaterial->getUniformLocation("cameraPos");
+		GLint viewLocation = currentMaterial->getUniformLocation("view");
+		GLint projectionLocation = currentMaterial->getUniformLocation("projection");
+		GLint cubeTextureLocation = currentMaterial->getUniformLocation("cubeTexture");
+
+		glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(cam->getProjectMatrix()));
+		glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(cam->getViewMatrix()));
+		glUniform4fv(cameraLocation, 1, glm::value_ptr(mainCamera->getTransform()->getPosition()));
+		glUniform1i(cubeTextureLocation, 0);
+
+		glDrawElements(GL_TRIANGLES, currentMesh->getIndexCount(), GL_UNSIGNED_INT, 0);
+
+		currentMaterial->unbind();
+	}
+
+}
+
 //Function to draw
 void render()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClearDepth(1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	renderSkyBox();
 
 	for (auto iter = displayList.begin(); iter != displayList.end(); iter++)
 	{
@@ -252,10 +371,10 @@ void render()
 	SDL_GL_SwapWindow(window);
 }
 
-
 //Function to update game state
 void update()
 {
+	skyBox->update();
 
 	for (auto iter = displayList.begin(); iter != displayList.end(); iter++)
 	{
@@ -267,6 +386,8 @@ void update()
 
 void initialise()
 {
+	createSkyBox();
+
 	mainCamera = new GameObject();
 	mainCamera->setName("Camera");
 	
@@ -300,57 +421,57 @@ void initialise()
 	}
 
 	//Changed Model loading variable for ArmoredRecon - IS
-	std::string armoredReconModel = ASSET_PATH + MODEL_PATH + "armoredrecon.fbx";
-	GameObject * go = loadFBXFromFile(armoredReconModel);
-	for (int i = 0; i < go->getChildCount(); i++)
-	{
-		Material * material = new Material();
-		material->init();
-		std::string vsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingVS.glsl";
-		std::string fsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingFS.glsl";
-		material->loadShader(vsPath, fsPath);
+	//std::string armoredReconModel = ASSET_PATH + MODEL_PATH + "armoredrecon.fbx";
+	//GameObject * go = loadFBXFromFile(armoredReconModel);
+	//for (int i = 0; i < go->getChildCount(); i++)
+	//{
+	//	Material * material = new Material();
+	//	material->init();
+	//	std::string vsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingVS.glsl";
+	//	std::string fsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingFS.glsl";
+	//	material->loadShader(vsPath, fsPath);
 
-		std::string diffTexturePath = ASSET_PATH + TEXTURE_PATH + "/armoredrecon_diff.png";
-		material->loadDiffuseMap(diffTexturePath);
+	//	std::string diffTexturePath = ASSET_PATH + TEXTURE_PATH + "/armoredrecon_diff.png";
+	//	material->loadDiffuseMap(diffTexturePath);
 
-		std::string specTexturePath = ASSET_PATH + TEXTURE_PATH + "/armoredrecon_spec.png";
-		material->loadSpecularMap(specTexturePath);
+	//	std::string specTexturePath = ASSET_PATH + TEXTURE_PATH + "/armoredrecon_spec.png";
+	//	material->loadSpecularMap(specTexturePath);
 
-		std::string bumpTexturePath = ASSET_PATH + TEXTURE_PATH + "/armoredrecon_N.png";
-		material->loadBumpMap(bumpTexturePath);
+	//	std::string bumpTexturePath = ASSET_PATH + TEXTURE_PATH + "/armoredrecon_N.png";
+	//	material->loadBumpMap(bumpTexturePath);
 
-		go->getChild(i)->setMaterial(material);
-	}
-	
-	go->getTransform()->setPosition(3.0f, -2.0f, -6.0f);
-	displayList.push_back(go);
+	//	go->getChild(i)->setMaterial(material);
+	//}
+	//
+	//go->getTransform()->setPosition(3.0f, -2.0f, -6.0f);
+	//displayList.push_back(go);
 
-	//Loading of additional model (tank1) with textures - IS
-	std::string tank1Model = ASSET_PATH + MODEL_PATH + "Tank1.fbx";
-	go = loadFBXFromFile(tank1Model);
-	for (int i = 0; i < go->getChildCount(); i++)
-	{
-		Material * material = new Material();
-		material->init();
-		std::string vsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingVS.glsl";
-		std::string fsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingFS.glsl";
-		material->loadShader(vsPath, fsPath);
+	////Loading of additional model (tank1) with textures - IS
+	//std::string tank1Model = ASSET_PATH + MODEL_PATH + "Tank1.fbx";
+	//go = loadFBXFromFile(tank1Model);
+	//for (int i = 0; i < go->getChildCount(); i++)
+	//{
+	//	Material * material = new Material();
+	//	material->init();
+	//	std::string vsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingVS.glsl";
+	//	std::string fsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingFS.glsl";
+	//	material->loadShader(vsPath, fsPath);
 
-		std::string diffTexturePath = ASSET_PATH + TEXTURE_PATH + "/Tank1DF.png";
-		material->loadDiffuseMap(diffTexturePath);
+	//	std::string diffTexturePath = ASSET_PATH + TEXTURE_PATH + "/Tank1DF.png";
+	//	material->loadDiffuseMap(diffTexturePath);
 
-		std::string specTexturePath = ASSET_PATH + TEXTURE_PATH + "/Tank1_S.png";
-		material->loadSpecularMap(specTexturePath);
+	//	std::string specTexturePath = ASSET_PATH + TEXTURE_PATH + "/Tank1_S.png";
+	//	material->loadSpecularMap(specTexturePath);
 
-		std::string bumpTexturePath = ASSET_PATH + TEXTURE_PATH + "/Tank1_N.png";
-		material->loadBumpMap(bumpTexturePath);
+	//	std::string bumpTexturePath = ASSET_PATH + TEXTURE_PATH + "/Tank1_N.png";
+	//	material->loadBumpMap(bumpTexturePath);
 
-		go->getChild(i)->setMaterial(material);
-	}
+	//	go->getChild(i)->setMaterial(material);
+	//}
 
-	go->getTransform()->setPosition(-3.0f, -2.0f, -6.0f);
-	go->getTransform()->setRotation(0.0f, 90.0f, 0.0f);
-	displayList.push_back(go);
+	//go->getTransform()->setPosition(-3.0f, -2.0f, -6.0f);
+	//go->getTransform()->setRotation(0.0f, 90.0f, 0.0f);
+	//displayList.push_back(go);
 
 	timer = new Timer(); //creates Timer object - RT
 

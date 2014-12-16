@@ -111,5 +111,7 @@
     <None Include="..\assets\shaders\specularVS.glsl" />
     <None Include="..\assets\shaders\textureFS.glsl" />
     <None Include="..\assets\shaders\textureVS.glsl" />
+    <None Include="..\assets\shaders\skyVS.glsl" />
+    <None Include="..\assets\shaders\skyFS.glsl" />
   </ItemGroup>
 </Project>
