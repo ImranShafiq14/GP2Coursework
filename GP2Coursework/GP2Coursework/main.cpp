@@ -560,6 +560,7 @@ int main(int argc, char * arg[])
 					Transform *t = new Transform();
 					t->setPosition(camPosition.x, camPosition.y, camPosition.z);
 					mainCamera->setTransform(t);
+					skyBox->setTransform(t);
 						
 					break;
 				}
@@ -573,6 +574,7 @@ int main(int argc, char * arg[])
 					Transform *t = new Transform();
 					t->setPosition(camPosition.x, camPosition.y, camPosition.z);
 					mainCamera->setTransform(t);
+					skyBox->setTransform(t);
 						
 					break;
 				}
@@ -589,6 +591,7 @@ int main(int argc, char * arg[])
 						Transform *t = new Transform();
 						t->setPosition(camPosition.x, camPosition.y, camPosition.z);
 						mainCamera->setTransform(t);
+						skyBox->setTransform(t);
 						
 					}
 					else
@@ -599,6 +602,7 @@ int main(int argc, char * arg[])
 						Transform *t = new Transform();
 						t->setPosition(camPosition.x, camPosition.y, camPosition.z);
 						mainCamera->setTransform(t);
+						skyBox->setTransform(t);
 					}
 					break;
 				}
@@ -615,6 +619,7 @@ int main(int argc, char * arg[])
 						Transform *t = new Transform();
 						t->setPosition(camPosition.x, camPosition.y, camPosition.z);
 						mainCamera->setTransform(t);
+						skyBox->setTransform(t);
 						
 					}
 					else
@@ -625,6 +630,7 @@ int main(int argc, char * arg[])
 						Transform *t = new Transform();
 						t->setPosition(camPosition.x, camPosition.y, camPosition.z);
 						mainCamera->setTransform(t);
+						skyBox->setTransform(t);
 
 					}
 					break;
@@ -643,6 +649,11 @@ int main(int argc, char * arg[])
 					timer->reset();
 					timer->start();
 					mainCamera->getCamera()->reset(); //resets lookAt value in camera - RT
+					
+					Transform *t = new Transform();
+					t = mainCamera->getTransform();
+					skyBox->setTransform(t);
+
 				}
 				default:
 					break;
