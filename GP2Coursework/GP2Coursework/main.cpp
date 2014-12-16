@@ -397,7 +397,7 @@ int main(int argc, char * arg[])
 			else if (event.type == SDL_MOUSEMOTION)
 			{
 
-				float deadzone = 2.5f;
+				float deadzone = 3.5f;
 
 				float magnitude = sqrt((float)event.motion.x * (float)event.motion.x + (float)event.motion.y * (float)event.motion.y);
 

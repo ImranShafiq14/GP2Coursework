@@ -16,4 +16,6 @@ GLuint loadTextureFromFont(const std::string& fontFilename, int pointSize, const
 
 GLuint convertSDLSurfaceToGLTexture(SDL_Surface * surface);
 
+void loadCubeMapSide(const std::string& filename, GLenum cubeSide);
+
 #endif

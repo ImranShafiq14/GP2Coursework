@@ -3,6 +3,33 @@
 #include "Texture.h"
 #include "Vertex.h"
 
+bool BaseMaterial::loadShader(const std::string& vsFilename, const std::string& fsFilename)
+{
+	GLuint vertexShaderProgram = 0;
+	vertexShaderProgram = loadShaderFromFile(const_cast<std::string&>(vsFilename), VERTEX_SHADER);
+
+	GLuint fragmentShaderProgram = 0;
+	fragmentShaderProgram = loadShaderFromFile(const_cast<std::string&>(fsFilename), FRAGMENT_SHADER);
+
+	m_ShaderProgram = glCreateProgram();
+	glAttachShader(m_ShaderProgram, vertexShaderProgram);
+	glAttachShader(m_ShaderProgram, fragmentShaderProgram);
+	glLinkProgram(m_ShaderProgram);
+	checkForLinkErrors(m_ShaderProgram);
+
+	//now we can delete the VS & FS Programs
+	glDeleteShader(vertexShaderProgram);
+	glDeleteShader(fragmentShaderProgram);
+
+	return true;
+}
+
+GLint BaseMaterial::getUniformLocation(const std::string& name)
+{
+	return glGetUniformLocation(m_ShaderProgram, name.c_str());
+}
+
+
 Material::Material()
 {
 	//m_Type = "Material";

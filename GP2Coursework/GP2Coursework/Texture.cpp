@@ -113,3 +113,38 @@ GLuint convertSDLSurfaceToGLTexture(SDL_Surface * surface)
 	
 	//return 0;
 }
+
+void loadCubeMapSide(const std::string& filename, GLenum cubeSide)
+{
+	SDL_Surface *imageSurface = IMG_Load(filename.c_str());
+
+	GLint  nOfColors = imageSurface->format->BytesPerPixel;
+	GLenum texture_format = GL_RGB;
+	GLenum internalFormat = GL_RGB8;
+	if (nOfColors == 4)     // contains an alpha channel
+	{
+		if (imageSurface->format->Rmask == 0x000000ff){
+			texture_format = GL_RGBA;
+			internalFormat = GL_RGBA8;
+		}
+		else{
+			texture_format = GL_BGRA;
+			internalFormat = GL_RGBA8;
+		}
+	}
+	else if (nOfColors == 3)     // no alpha channel
+	{
+		if (imageSurface->format->Rmask == 0x000000ff){
+			texture_format = GL_RGB;
+			internalFormat = GL_RGB8;
+		}
+		else
+		{
+			texture_format = GL_BGR;
+			internalFormat = GL_RGB8;
+		}
+	}
+	glTexImage2D(cubeSide, 0, internalFormat, imageSurface->w, imageSurface->h, 0, texture_format, GL_UNSIGNED_BYTE, imageSurface->pixels);
+
+	SDL_FreeSurface(imageSurface);
+}

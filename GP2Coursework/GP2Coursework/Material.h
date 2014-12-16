@@ -10,7 +10,24 @@ using glm::vec4;
 
 using namespace std;
 
-class Material : public Component
+class BaseMaterial :public Component{
+public:
+	BaseMaterial()
+	{
+		m_Type = "BaseMaterial";
+	};
+	virtual ~BaseMaterial(){}
+
+	virtual void bind(){};
+	virtual void unbind(){};
+
+	bool loadShader(const std::string& vsFilename, const std::string& fsFilename);
+	GLint getUniformLocation(const std::string& name);
+protected:
+	GLuint m_ShaderProgram;
+};
+
+class Material : public BaseMaterial
 {
 public:
 	Material();
