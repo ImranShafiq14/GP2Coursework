@@ -39,8 +39,8 @@ void SkyBoxMaterial::unbind()
 	glDepthMask(GL_TRUE);
 }
 
-void SkyBoxMaterial::loadCubeTexture(const std::string& filenamePosZ, const std::string filenameNegZ, const std::string& filenamePosX,
-	const std::string& filenameNegX, const std::string& filenamePosY, const std::string& filenameNegY)
+void SkyBoxMaterial::loadCubeTexture(const string& filenamePosZ, const string& filenameNegZ, const string& filenamePosX,
+	const string& filenameNegX, const string& filenamePosY, const string& filenameNegY)
 {
 	glActiveTexture(GL_TEXTURE0);
 	glGenTextures(1, &m_CubeTexture);
@@ -56,8 +56,8 @@ void SkyBoxMaterial::loadCubeTexture(const std::string& filenamePosZ, const std:
 
 	loadCubeMapSide(filenamePosZ, GL_TEXTURE_CUBE_MAP_POSITIVE_Z);
 	loadCubeMapSide(filenameNegZ, GL_TEXTURE_CUBE_MAP_NEGATIVE_Z);
-	loadCubeMapSide(filenamePosZ, GL_TEXTURE_CUBE_MAP_POSITIVE_X);
-	loadCubeMapSide(filenameNegZ, GL_TEXTURE_CUBE_MAP_NEGATIVE_X);
+	loadCubeMapSide(filenamePosX, GL_TEXTURE_CUBE_MAP_POSITIVE_X);
+	loadCubeMapSide(filenameNegX, GL_TEXTURE_CUBE_MAP_NEGATIVE_X);
 	loadCubeMapSide(filenamePosY, GL_TEXTURE_CUBE_MAP_POSITIVE_Y);
 	loadCubeMapSide(filenameNegY, GL_TEXTURE_CUBE_MAP_NEGATIVE_Y);
 

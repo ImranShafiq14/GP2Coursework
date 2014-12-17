@@ -69,6 +69,14 @@ Timer * timer; //pointer to Timer object - RT
 //boolean for triggering debug camera - RT
 bool debug = false;
 
+void CheckForErrors()
+{
+	GLenum error;
+	do{
+		error = glGetError();
+	} while (error != GL_NO_ERROR);
+}
+
 //Global functions
 void InitWindow(int width, int height, bool fullscreen)
 {
@@ -243,6 +251,8 @@ void createSkyBox()
 	skyBox->setTransform(t);
 	skyBox->setMesh(pMesh);
 
+	CheckForErrors();
+
 }
 
 
@@ -338,7 +348,11 @@ void renderSkyBox()
 		GLint cubeTextureLocation = currentMaterial->getUniformLocation("cubeTexture");
 
 		glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(cam->getProjectMatrix()));
-		glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(cam->getViewMatrix()));
+
+		mat4 rotationY = glm::rotate(mat4(1.0f), mainCamera->getTransform()->getRotation().y, vec3(0.0f, 1.0f, 0.0f));
+		mat4 rotationX = glm::rotate(mat4(1.0f), mainCamera->getTransform()->getRotation().x, vec3(1.0f, 0.0f, 0.0f));
+
+		glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(rotationY*rotationX));
 		glUniform4fv(cameraLocation, 1, glm::value_ptr(mainCamera->getTransform()->getPosition()));
 		glUniform1i(cubeTextureLocation, 0);
 
@@ -346,6 +360,8 @@ void renderSkyBox()
 
 		currentMaterial->unbind();
 	}
+
+	CheckForErrors();
 
 }
 
@@ -415,30 +431,30 @@ void initialise()
 	}
 
 	//Changed Model loading variable for ArmoredRecon - IS
-	//std::string armoredReconModel = ASSET_PATH + MODEL_PATH + "armoredrecon.fbx";
-	//GameObject * go = loadFBXFromFile(armoredReconModel);
-	//for (int i = 0; i < go->getChildCount(); i++)
-	//{
-	//	Material * material = new Material();
-	//	material->init();
-	//	std::string vsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingVS.glsl";
-	//	std::string fsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingFS.glsl";
-	//	material->loadShader(vsPath, fsPath);
+	std::string armoredReconModel = ASSET_PATH + MODEL_PATH + "armoredrecon.fbx";
+	GameObject * go = loadFBXFromFile(armoredReconModel);
+	for (int i = 0; i < go->getChildCount(); i++)
+	{
+		Material * material = new Material();
+		material->init();
+		std::string vsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingVS.glsl";
+		std::string fsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingFS.glsl";
+		material->loadShader(vsPath, fsPath);
 
-	//	std::string diffTexturePath = ASSET_PATH + TEXTURE_PATH + "/armoredrecon_diff.png";
-	//	material->loadDiffuseMap(diffTexturePath);
+		std::string diffTexturePath = ASSET_PATH + TEXTURE_PATH + "/armoredrecon_diff.png";
+		material->loadDiffuseMap(diffTexturePath);
 
-	//	std::string specTexturePath = ASSET_PATH + TEXTURE_PATH + "/armoredrecon_spec.png";
-	//	material->loadSpecularMap(specTexturePath);
+		std::string specTexturePath = ASSET_PATH + TEXTURE_PATH + "/armoredrecon_spec.png";
+		material->loadSpecularMap(specTexturePath);
 
-	//	std::string bumpTexturePath = ASSET_PATH + TEXTURE_PATH + "/armoredrecon_N.png";
-	//	material->loadBumpMap(bumpTexturePath);
+		std::string bumpTexturePath = ASSET_PATH + TEXTURE_PATH + "/armoredrecon_N.png";
+		material->loadBumpMap(bumpTexturePath);
 
-	//	go->getChild(i)->setMaterial(material);
-	//}
-	//
-	//go->getTransform()->setPosition(3.0f, -2.0f, -6.0f);
-	//displayList.push_back(go);
+		go->getChild(i)->setMaterial(material);
+	}
+	
+	go->getTransform()->setPosition(3.0f, -2.0f, -6.0f);
+	displayList.push_back(go);
 
 	////Loading of additional model (tank1) with textures - IS
 	//std::string tank1Model = ASSET_PATH + MODEL_PATH + "Tank1.fbx";
