@@ -320,6 +320,8 @@ void renderGameObject(GameObject *pObject)
 		glUniform1i(bumpTextureLocation, 2);
 		
 		glDrawElements(GL_TRIANGLES, currentMesh->getIndexCount(), GL_UNSIGNED_INT, 0);
+
+		currentMaterial->unbind();
 	}
 	
 	for (int i = 0; i < pObject->getChildCount(); i++)
