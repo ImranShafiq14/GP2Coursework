@@ -250,6 +250,61 @@ void render()
 	SDL_GL_SwapWindow(window);
 }
 
+void loadModels()
+{
+	std::string models[4] = { "armoredrecon.fbx", "Tank1.fbx", "Tank2.fbx", "Tank3.fbx" };
+	std::string diffuseTextures[4] = { "/armoredrecon_diff.png", "/Tank1DF.png", "/Tank2DF.png", "/Tank3DF.png" };
+	std::string specularTextures[4] = { "/armoredrecon_spec.png", "/Tank1_S.png", "/Tank2_S.png", "/Tank3_S.png" };
+	std::string bumpTextures[4] = { "/armoredrecon_N.png", "/Tank1_N.png", "/Tank2_N.png", "/Tank3_N.png" };
+
+	for (int i = 0; i < 4; i++)
+	{
+		GameObject * go = loadFBXFromFile(ASSET_PATH + MODEL_PATH + models[i]);
+		for (int model = 0; model < go->getChildCount(); model++)
+		{
+			Material * material = new Material();
+			material->init();
+			std::string vsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingVS.glsl";
+			std::string fsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingFS.glsl";
+			material->loadShader(vsPath, fsPath);
+
+			std::string diffTexturePath = ASSET_PATH + TEXTURE_PATH + diffuseTextures[i];
+			material->loadDiffuseMap(diffTexturePath);
+
+			std::string specTexturePath = ASSET_PATH + TEXTURE_PATH + specularTextures[i];
+			material->loadSpecularMap(specTexturePath);
+
+			std::string bumpTexturePath = ASSET_PATH + TEXTURE_PATH + bumpTextures[i];
+			material->loadBumpMap(bumpTexturePath);
+
+			go->getChild(model)->setMaterial(material);
+		}
+
+		if (i == 0)
+		{
+			go->getTransform()->setPosition(1.0f, -2.0f, -6.0f);
+		}
+
+		if (i == 1)
+		{
+			go->getTransform()->setPosition(-7.0f, -2.0f, -6.0f);
+			go->getTransform()->setRotation(0.0f, 90.0f, 0.0f);
+		}
+
+		if (i == 2)
+		{
+			go->getTransform()->setPosition(-3.0f, -2.0f, -6.0f);
+			go->getTransform()->setRotation(0.0f, 90.0f, 0.0f);
+		}
+
+		if (i == 3)
+		{
+			go->getTransform()->setPosition(4.0f, -2.0f, -6.0f);
+			go->getTransform()->setRotation(0.0f, 90.0f, 0.0f);
+		}
+		displayList.push_back(go);
+	}
+}
 
 //Function to update game state
 void update()
@@ -295,58 +350,7 @@ void initialise()
 		(*iter)->init();
 	}
 
-	//Changed Model loading variable for ArmoredRecon - IS
-	std::string armoredReconModel = ASSET_PATH + MODEL_PATH + "armoredrecon.fbx";
-	GameObject * go = loadFBXFromFile(armoredReconModel);
-	for (int i = 0; i < go->getChildCount(); i++)
-	{
-		Material * material = new Material();
-		material->init();
-		std::string vsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingVS.glsl";
-		std::string fsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingFS.glsl";
-		material->loadShader(vsPath, fsPath);
-
-		std::string diffTexturePath = ASSET_PATH + TEXTURE_PATH + "/armoredrecon_diff.png";
-		material->loadDiffuseMap(diffTexturePath);
-
-		std::string specTexturePath = ASSET_PATH + TEXTURE_PATH + "/armoredrecon_spec.png";
-		material->loadSpecularMap(specTexturePath);
-
-		std::string bumpTexturePath = ASSET_PATH + TEXTURE_PATH + "/armoredrecon_N.png";
-		material->loadBumpMap(bumpTexturePath);
-
-		go->getChild(i)->setMaterial(material);
-	}
-	
-	go->getTransform()->setPosition(3.0f, -2.0f, -6.0f);
-	displayList.push_back(go);
-
-	//Loading of additional model (tank1) with textures - IS
-	std::string tank1Model = ASSET_PATH + MODEL_PATH + "Tank1.fbx";
-	go = loadFBXFromFile(tank1Model);
-	for (int i = 0; i < go->getChildCount(); i++)
-	{
-		Material * material = new Material();
-		material->init();
-		std::string vsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingVS.glsl";
-		std::string fsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingFS.glsl";
-		material->loadShader(vsPath, fsPath);
-
-		std::string diffTexturePath = ASSET_PATH + TEXTURE_PATH + "/Tank1DF.png";
-		material->loadDiffuseMap(diffTexturePath);
-
-		std::string specTexturePath = ASSET_PATH + TEXTURE_PATH + "/Tank1_S.png";
-		material->loadSpecularMap(specTexturePath);
-
-		std::string bumpTexturePath = ASSET_PATH + TEXTURE_PATH + "/Tank1_N.png";
-		material->loadBumpMap(bumpTexturePath);
-
-		go->getChild(i)->setMaterial(material);
-	}
-
-	go->getTransform()->setPosition(-3.0f, -2.0f, -6.0f);
-	go->getTransform()->setRotation(0.0f, 90.0f, 0.0f);
-	displayList.push_back(go);
+	loadModels();
 	
 }
 
