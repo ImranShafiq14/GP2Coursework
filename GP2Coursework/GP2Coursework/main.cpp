@@ -333,7 +333,7 @@ void renderGameObject(GameObject *pObject)
 //renders skybox - slimmed down version of renderGameObject - RT
 void renderSkyBox()
 {
-	skyBox->render();
+	//skyBox->render();
 
 	Mesh * currentMesh = skyBox->getMesh();
 	SkyBoxMaterial * currentMaterial = (SkyBoxMaterial*)skyBox->getMaterial();
@@ -374,7 +374,7 @@ void render()
 	glClearDepth(1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	renderSkyBox();
+	//renderSkyBox();
 
 	for (auto iter = displayList.begin(); iter != displayList.end(); iter++)
 	{
@@ -386,7 +386,7 @@ void render()
 //Function to update game state
 void update()
 {
-	skyBox->update();
+	//skyBox->update();
 
 	for (auto iter = displayList.begin(); iter != displayList.end(); iter++)
 	{
@@ -398,7 +398,7 @@ void update()
 
 void initialise()
 {
-	createSkyBox();
+	//createSkyBox();
 
 	mainCamera = new GameObject();
 	mainCamera->setName("Camera");
@@ -572,7 +572,7 @@ int main(int argc, char * arg[])
 					Transform *t = new Transform();
 					t->setPosition(camPosition.x, camPosition.y, camPosition.z);
 					mainCamera->setTransform(t);
-					skyBox->setTransform(t);
+					//skyBox->setTransform(t);
 						
 					break;
 				}
@@ -586,7 +586,7 @@ int main(int argc, char * arg[])
 					Transform *t = new Transform();
 					t->setPosition(camPosition.x, camPosition.y, camPosition.z);
 					mainCamera->setTransform(t);
-					skyBox->setTransform(t);
+					//skyBox->setTransform(t);
 						
 					break;
 				}
@@ -603,7 +603,7 @@ int main(int argc, char * arg[])
 						Transform *t = new Transform();
 						t->setPosition(camPosition.x, camPosition.y, camPosition.z);
 						mainCamera->setTransform(t);
-						skyBox->setTransform(t);
+						//skyBox->setTransform(t);
 						
 					}
 					else
@@ -614,7 +614,7 @@ int main(int argc, char * arg[])
 						Transform *t = new Transform();
 						t->setPosition(camPosition.x, camPosition.y, camPosition.z);
 						mainCamera->setTransform(t);
-						skyBox->setTransform(t);
+						//skyBox->setTransform(t);
 					}
 					break;
 				}
@@ -631,7 +631,7 @@ int main(int argc, char * arg[])
 						Transform *t = new Transform();
 						t->setPosition(camPosition.x, camPosition.y, camPosition.z);
 						mainCamera->setTransform(t);
-						skyBox->setTransform(t);
+						//skyBox->setTransform(t);
 						
 					}
 					else
@@ -642,7 +642,7 @@ int main(int argc, char * arg[])
 						Transform *t = new Transform();
 						t->setPosition(camPosition.x, camPosition.y, camPosition.z);
 						mainCamera->setTransform(t);
-						skyBox->setTransform(t);
+						//skyBox->setTransform(t);
 
 					}
 					break;
@@ -664,7 +664,7 @@ int main(int argc, char * arg[])
 					
 					Transform *t = new Transform();
 					t = mainCamera->getTransform();
-					skyBox->setTransform(t);
+					//skyBox->setTransform(t);
 
 				}
 				default:
