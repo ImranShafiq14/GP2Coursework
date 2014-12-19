@@ -33,6 +33,8 @@ using glm::vec4;
 #include "Light.h"
 #include "Timer.h"
 
+#include "TextureManager.h"
+
 #ifdef _DEBUG && WIN32
 const std::string ASSET_PATH = "../assets";
 #else
@@ -80,6 +82,7 @@ void InitWindow(int width, int height, bool fullscreen)
 //Used to cleanup once we exit
 void CleanUp()
 {
+	TextureManager::getManager().clear();
 	auto iter = displayList.begin();
 	while (iter != displayList.end())
 	{
