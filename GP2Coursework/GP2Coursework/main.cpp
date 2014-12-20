@@ -32,6 +32,7 @@ using glm::vec4;
 #include "Component.h"
 #include "Light.h"
 #include "Timer.h"
+#include "SkyboxMaterial.h"
 
 #include "TextureManager.h"
 
@@ -63,8 +64,20 @@ GameObject *mainCamera;
 vec4 ambientLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 GameObject * mainLight;
 
+GameObject * skyBox = NULL;
+
 //boolean for triggering debug camera - RT
 bool debug = false;
+
+void CheckForErrors()
+{
+	GLenum error;
+	do
+	{
+		error = glGetError();
+	}
+	while (error != GL_NO_ERROR);
+}
 
 //Global functions
 void InitWindow(int width, int height, bool fullscreen)
@@ -82,6 +95,14 @@ void InitWindow(int width, int height, bool fullscreen)
 //Used to cleanup once we exit
 void CleanUp()
 {
+	
+	if (skyBox)
+	{
+		skyBox->destroy();
+		delete skyBox;
+		skyBox = NULL;
+	}
+
 	TextureManager::getManager().clear();
 	auto iter = displayList.begin();
 	while (iter != displayList.end())
@@ -167,6 +188,81 @@ void setViewport(int width, int height)
 	glViewport(0, 0, (GLsizei)width, (GLsizei)height);
 }
 
+void createSkyBox()
+{
+	Vertex triangleData[] = {
+		{ vec3(-10.0f, 10.0f, 10.0f) },// Top Left
+		{ vec3(-10.0f, -10.0f, 10.0f) },// Bottom Left
+		{ vec3(10.0f, -10.0f, 10.0f) }, //Bottom Right
+		{ vec3(10.0f, 10.0f, 10.0f) },// Top Right
+
+		//back
+		{ vec3(-10.0f, 10.0f, -10.0f) },// Top Left
+		{ vec3(-10.0f, -10.0f, -10.0f) },// Bottom Left
+		{ vec3(10.0, -10.0f, -10.0f) }, //Bottom Right
+		{ vec3(10.0f, 10.0f, -10.0f) }// Top Right
+	};
+
+	GLuint indices[] = {
+		//front
+		0, 2, 1,
+		0, 3, 2,
+
+		//left
+		1, 2, 6,
+		6, 5, 1,
+
+		//right
+		4, 5, 6,
+		6, 7, 4,
+
+		//bottom
+		2, 3, 6,
+		6, 3, 7,
+
+		//top
+		0, 7, 3,
+		0, 4, 7,
+
+		//back
+		0, 1, 5,
+		0, 5, 4
+	};
+
+	//creat mesh and copy in
+	Mesh * pMesh = new Mesh();
+	pMesh->init();
+
+	pMesh->copyVertexData(8, sizeof(Vertex), (void**)triangleData);
+	pMesh->copyIndexData(36, sizeof(int), (void**)indices);
+
+	Transform *t = new Transform();
+	t->setPosition(0.0f, 0.0f, 0.0f);
+	//load textures and skybox material + Shaders
+	SkyBoxMaterial *material = new SkyBoxMaterial();
+	material->init();
+
+	std::string vsPath = ASSET_PATH + SHADER_PATH + "/skyboxVS.glsl";
+	std::string fsPath = ASSET_PATH + SHADER_PATH + "/skyboxFS.glsl";
+	material->loadShader(vsPath, fsPath);
+
+	std::string posZTexturename = ASSET_PATH + TEXTURE_PATH + "/CloudyLightRaysFront2048.png";
+	std::string negZTexturename = ASSET_PATH + TEXTURE_PATH + "/CloudyLightRaysBack2048.png";
+	std::string posXTexturename = ASSET_PATH + TEXTURE_PATH + "/CloudyLightRaysLeft2048.png";
+	std::string negXTexturename = ASSET_PATH + TEXTURE_PATH + "/CloudyLightRaysRight2048.png";
+	std::string posYTexturename = ASSET_PATH + TEXTURE_PATH + "/CloudyLightRaysUp2048.png";
+	std::string negYTexturename = ASSET_PATH + TEXTURE_PATH + "/CloudyLightRaysDown2048.png";
+
+	material->loadCubeTexture(posZTexturename, negZTexturename, posXTexturename, negXTexturename, posYTexturename, negYTexturename);
+	//create gameobject but don't add to queue!
+	skyBox = new GameObject();
+	skyBox->setMaterial(material);
+	skyBox->setTransform(t);
+	skyBox->setMesh(pMesh);
+	
+	CheckForErrors();
+}
+
 void renderGameObject(GameObject *pObject)
 {
 	if (!pObject)
@@ -177,8 +273,9 @@ void renderGameObject(GameObject *pObject)
 	pObject->render();
 	Mesh * currentMesh = pObject->getMesh();
 	Transform * currentTransform = pObject->getTransform();
-	Material * currentMaterial = pObject->getMaterial();
-	
+	//Material * currentMaterial = pObject->getMaterial();
+	Material * currentMaterial = (Material*)pObject->getMaterial();
+
 	if (currentMesh && currentMaterial && currentTransform)
 	{
 		currentMesh->Bind();
@@ -231,6 +328,8 @@ void renderGameObject(GameObject *pObject)
 		glUniform1i(bumpTextureLocation, 2);
 		
 		glDrawElements(GL_TRIANGLES, currentMesh->getIndexCount(), GL_UNSIGNED_INT, 0);
+	
+		currentMaterial->unbind();
 	}
 	
 	for (int i = 0; i < pObject->getChildCount(); i++)
@@ -239,12 +338,45 @@ void renderGameObject(GameObject *pObject)
 	}
 }
 
+void renderSkyBox()
+{
+	skyBox->render();
+
+	Mesh * currentMesh = skyBox->getMesh();
+	SkyBoxMaterial * currentMaterial = (SkyBoxMaterial*)skyBox->getMaterial();
+	if (currentMesh && currentMaterial)
+	{
+		Camera * cam = mainCamera->getCamera();
+	
+		currentMaterial->bind();
+		currentMesh->Bind();
+		
+		GLint cameraLocation = currentMaterial->getUniformLocation("cameraPos");
+		GLint viewLocation = currentMaterial->getUniformLocation("view");
+		GLint projectionLocation = currentMaterial->getUniformLocation("projection");
+		GLint cubeTextureLocation = currentMaterial->getUniformLocation("cubeTexture");
+		
+		glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(cam->getProjectMatrix()));
+		glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(cam->getViewMatrix()));
+		glUniform4fv(cameraLocation, 1, glm::value_ptr(mainCamera->getTransform()->getPosition()));
+		glUniform1i(cubeTextureLocation, 0);
+		
+		glDrawElements(GL_TRIANGLES, currentMesh->getIndexCount(), GL_UNSIGNED_INT, 0);
+		
+		currentMaterial->unbind();
+	}
+	CheckForErrors();
+}
+
+
 //Function to draw
 void render()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClearDepth(1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	renderSkyBox();
 
 	for (auto iter = displayList.begin(); iter != displayList.end(); iter++)
 	{
@@ -312,6 +444,7 @@ void loadModels()
 //Function to update game state
 void update()
 {
+	skyBox->update();
 
 	for (auto iter = displayList.begin(); iter != displayList.end(); iter++)
 	{
@@ -321,6 +454,8 @@ void update()
 
 void initialise()
 {
+	createSkyBox();
+
 	mainCamera = new GameObject();
 	mainCamera->setName("Camera");
 	
@@ -424,6 +559,7 @@ int main(int argc, char * arg[])
 					Transform *t = new Transform();
 					t->setPosition(camPosition.x, camPosition.y, camPosition.z);
 					mainCamera->setTransform(t);
+					skyBox->setTransform(t);
 						
 					break;
 				}
@@ -437,6 +573,7 @@ int main(int argc, char * arg[])
 					Transform *t = new Transform();
 					t->setPosition(camPosition.x, camPosition.y, camPosition.z);
 					mainCamera->setTransform(t);
+					skyBox->setTransform(t);
 						
 					break;
 				}
@@ -453,6 +590,7 @@ int main(int argc, char * arg[])
 						Transform *t = new Transform();
 						t->setPosition(camPosition.x, camPosition.y, camPosition.z);
 						mainCamera->setTransform(t);
+						skyBox->setTransform(t);
 						
 					}
 					else
@@ -463,6 +601,7 @@ int main(int argc, char * arg[])
 						Transform *t = new Transform();
 						t->setPosition(camPosition.x, camPosition.y, camPosition.z);
 						mainCamera->setTransform(t);
+						skyBox->setTransform(t);
 					}
 					break;
 				}
@@ -479,6 +618,7 @@ int main(int argc, char * arg[])
 						Transform *t = new Transform();
 						t->setPosition(camPosition.x, camPosition.y, camPosition.z);
 						mainCamera->setTransform(t);
+						skyBox->setTransform(t);
 						
 					}
 					else
@@ -489,6 +629,7 @@ int main(int argc, char * arg[])
 						Transform *t = new Transform();
 						t->setPosition(camPosition.x, camPosition.y, camPosition.z);
 						mainCamera->setTransform(t);
+						skyBox->setTransform(t);
 
 					}
 					break;

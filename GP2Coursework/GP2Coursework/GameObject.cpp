@@ -126,13 +126,13 @@ Mesh * GameObject::getMesh()
 	return m_Mesh;
 }
 
-void GameObject::setMaterial(Material * material)
+void GameObject::setMaterial(BaseMaterial * material)
 {
 	m_Material = material;
 	addComponent(m_Material);
 }
 
-Material * GameObject::getMaterial()
+BaseMaterial * GameObject::getMaterial()
 {
 	return m_Material;
 }

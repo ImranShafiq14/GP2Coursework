@@ -8,7 +8,7 @@ using namespace std;
 
 class Component;
 class Mesh;
-class Material;
+class BaseMaterial;
 class Camera;
 class Transform;
 class Light;
@@ -32,7 +32,7 @@ public:
 	int getChildCount();
 
 	Mesh * getMesh();
-	Material * getMaterial();
+	BaseMaterial * getMaterial();
 	Camera * getCamera();
 	Transform * getTransform();
 	Light * getLight();
@@ -41,7 +41,7 @@ public:
 	GameObject* getChild(int index);
 
 	void setMesh(Mesh * mesh);
-	void setMaterial(Material * material);
+	void setMaterial(BaseMaterial * material);
 	void setCamera(Camera * camera);
 	void setTransform(Transform * transform);
 	void setLight(Light * light);
@@ -53,7 +53,7 @@ private:
 	vector<Component*> m_Components;
 	
 	Mesh *m_Mesh;
-	Material *m_Material;
+	BaseMaterial *m_Material;
 	Camera *m_Camera;
 	Transform *m_Transform;
 	Light *m_Light;
