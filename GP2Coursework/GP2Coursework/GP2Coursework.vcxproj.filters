@@ -111,5 +111,7 @@
     <None Include="..\assets\shaders\specularVS.glsl" />
     <None Include="..\assets\shaders\textureFS.glsl" />
     <None Include="..\assets\shaders\textureVS.glsl" />
+    <None Include="..\assets\shaders\parallaxMappingFS.glsl" />
+    <None Include="..\assets\shaders\parallaxMappingVS.glsl" />
   </ItemGroup>
 </Project>

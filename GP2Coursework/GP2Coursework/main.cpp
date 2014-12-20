@@ -198,6 +198,7 @@ void renderGameObject(GameObject *pObject)
 		GLint diffuseTextureLocation = currentMaterial->getUniformLocation("diffuseMap");
 		GLint specularTextureLocation = currentMaterial->getUniformLocation("specMap");
 		GLint bumpTextureLocation = currentMaterial->getUniformLocation("bumpMap");
+		GLint heightTextureLocation = currentMaterial->getUniformLocation("heightMap");
 
 		Camera *cam = mainCamera->getCamera();
 		Light * light = mainLight->getLight();
@@ -229,6 +230,7 @@ void renderGameObject(GameObject *pObject)
 		glUniform1i(diffuseTextureLocation, 0);
 		glUniform1i(specularTextureLocation, 1);
 		glUniform1i(bumpTextureLocation, 2);
+		glUniform1i(heightTextureLocation, 3);
 		
 		glDrawElements(GL_TRIANGLES, currentMesh->getIndexCount(), GL_UNSIGNED_INT, 0);
 	}
@@ -259,6 +261,7 @@ void loadModels()
 	std::string diffuseTextures[4] = { "/armoredrecon_diff.png", "/Tank1DF.png", "/Tank2DF.png", "/Tank3DF.png" };
 	std::string specularTextures[4] = { "/armoredrecon_spec.png", "/Tank1_S.png", "/Tank2_S.png", "/Tank3_S.png" };
 	std::string bumpTextures[4] = { "/armoredrecon_N.png", "/Tank1_N.png", "/Tank2_N.png", "/Tank3_N.png" };
+	std::string heightTextures[4] = { "/armoredrecon_Height.png", "/Tank1_H.png", "/Tank2_H.png", "/Tank3_H.png" };
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -267,8 +270,10 @@ void loadModels()
 		{
 			Material * material = new Material();
 			material->init();
-			std::string vsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingVS.glsl";
-			std::string fsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingFS.glsl";
+			std::string vsPath = ASSET_PATH + SHADER_PATH + "/parallaxMappingVS.glsl";
+			std::string fsPath = ASSET_PATH + SHADER_PATH + "/parallaxMappingFS.glsl";
+			//std::string vsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingVS.glsl";
+			//std::string fsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingFS.glsl";
 			material->loadShader(vsPath, fsPath);
 
 			std::string diffTexturePath = ASSET_PATH + TEXTURE_PATH + diffuseTextures[i];
@@ -279,6 +284,9 @@ void loadModels()
 
 			std::string bumpTexturePath = ASSET_PATH + TEXTURE_PATH + bumpTextures[i];
 			material->loadBumpMap(bumpTexturePath);
+
+			std::string heightTexturePath = ASSET_PATH + TEXTURE_PATH + heightTextures[i];
+			material->loadHeightMap(heightTexturePath);
 
 			go->getChild(model)->setMaterial(material);
 		}

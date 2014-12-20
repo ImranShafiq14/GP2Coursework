@@ -32,6 +32,7 @@ Material::Material()
 	m_DiffuseMap = 0;
 	m_SpecularMap = 0;
 	m_BumpMap = 0;
+	m_HeightMap = 0;
 }
 
 Material::~Material()
@@ -45,6 +46,7 @@ void Material::destroy()
 	//glDeleteTextures(1, &m_DiffuseMap);
 	//glDeleteTextures(1, &m_SpecularMap);
 	//glDeleteTextures(1, &m_BumpMap);
+	//glDeleteTextures(1, &m_HeightMap);
 }
 
 bool Material::loadShader(const string& vertexShader, const string& fragmentShader)
@@ -83,6 +85,9 @@ void Material::Bind()
 
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, m_BumpMap);
+
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, m_HeightMap);
 	
 	GLint vertexPosLocation = glGetAttribLocation(m_ShaderProgram, "vertexPosition");
 	GLint vertexNormalsLocation = glGetAttribLocation(m_ShaderProgram, "vertexNormals");
@@ -190,5 +195,15 @@ void Material::loadBumpMap(const std::string& filename)
 {
 	//m_BumpMap = loadTextureFromFile(filename);
 	m_BumpMap = TextureManager::getManager().getTexture(filename);
+}
+
+GLuint Material::getHeightMap()
+{
+	return m_HeightMap;
+}
+
+void Material::loadHeightMap(const std::string& filename)
+{
+	m_HeightMap = TextureManager::getManager().getTexture(filename);
 }
 
