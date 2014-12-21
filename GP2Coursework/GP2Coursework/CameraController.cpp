@@ -15,8 +15,8 @@ using namespace std;
 CameraController::CameraController()
 {
 	attachedCamera = NULL;
-	forwardSpeed = 4;
-	strafeSpeed = 4;
+	forwardSpeed = 100;
+	strafeSpeed = 100;
 	lookSpeed = 0.1f;
 	m_Type = "Camera Controller";
 }
