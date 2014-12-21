@@ -544,46 +544,18 @@ int main(int argc, char * arg[])
 			{
 				//set our boolean which controls the game loop to false
 				running = false;
-			}
-			//checks for mouse motion - RT
-			else if (event.type == SDL_MOUSEMOTION)
-			{
-
-				
-
-				/*float deadzone = 3.5f;
-
-				float magnitude = sqrt((float)event.motion.x * (float)event.motion.x + (float)event.motion.y * (float)event.motion.y);
-
-				cout << magnitude << endl;
-
-				if (magnitude > deadzone || (magnitude < -deadzone))
-				{
-
-					float cameraMoveLookX = ((float)event.motion.x - (WINDOW_WIDTH / 2)) * timer->getDeltaTime();
-					float cameraMoveLookY = ((float)event.motion.y - (WINDOW_HEIGHT / 2)) * timer->getDeltaTime();
-
-					vec3 camLookAt = mainCamera->getCamera()->getLookAt();
-
-					mainCamera->getCamera()->setLookAt(camLookAt.x + cameraMoveLookX, camLookAt.y - cameraMoveLookY, camLookAt.z);
-
-				}
-				else
-				{
-					magnitude = 0.0f;
-				}*/
-
-				
-			}	
+			}		
 			//check for key held down by user - RT
 			else if (event.type == SDL_KEYDOWN)
 			{
 				Input::getInput().getKeyboard()->setKeyDown(event.key.keysym.sym);
 			}
+			//checks for key being released by user - RT
 			else if (event.type = SDL_KEYUP)
 			{
 				Input::getInput().getKeyboard()->setKeyUp(event.key.keysym.sym);
 			}
+			//checks for mouse motion from user - RT
 			else if (event.type = SDL_MOUSEMOTION)
 			{
 				Input::getInput().getMouse()->setMousePosition(event.motion.x, event.motion.y, event.motion.xrel, event.motion.yrel);
