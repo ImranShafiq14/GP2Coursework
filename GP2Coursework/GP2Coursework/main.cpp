@@ -394,13 +394,13 @@ void render()
 void update()
 {
 	//skyBox->update();
+	
+	Timer::getTimer().update();
 
 	for (auto iter = displayList.begin(); iter != displayList.end(); iter++)
 	{
 		(*iter)->update();
 	}
-
-	Timer::getTimer().update();
 
 	Input::getInput().update();
 }
@@ -421,7 +421,7 @@ void initialise()
 	c->setFOV(45.0f);
 	c->setAspectRatio((float)WINDOW_WIDTH / WINDOW_HEIGHT);
 	c->setNearClip(0.1f);
-	c->setFarClip(100.0f);
+	c->setFarClip(1000.0f);
 	mainCamera->setCamera(c);
 
 	//creates camera controller

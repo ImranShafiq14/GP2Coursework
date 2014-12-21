@@ -25,6 +25,6 @@ void Mouse::setMousePosition(int absoluteX, int absoluteY, int relativeX, int re
 {
 	absoluteMouseX = absoluteX;
 	absoluteMouseY = absoluteY;
-	relativeMouseX = relativeMouseX;
-	relativeMouseY = relativeMouseY;
+	relativeMouseX = relativeX;
+	relativeMouseY = relativeY;
 }
