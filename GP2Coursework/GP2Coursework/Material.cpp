@@ -2,6 +2,7 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "Vertex.h"
+#include "TextureManager.h"
 
 bool BaseMaterial::loadShader(const std::string& vsFilename, const std::string& fsFilename)
 {
@@ -68,9 +69,9 @@ Material::~Material()
 void Material::destroy()
 {
 	glDeleteProgram(m_ShaderProgram);
-	glDeleteTextures(1, &m_DiffuseMap);
-	glDeleteTextures(1, &m_SpecularMap);
-	glDeleteTextures(1, &m_BumpMap);
+	//glDeleteTextures(1, &m_DiffuseMap);
+	//glDeleteTextures(1, &m_SpecularMap);
+	//glDeleteTextures(1, &m_BumpMap);
 }
 
 bool Material::loadShader(const string& vertexShader, const string& fragmentShader)
@@ -192,7 +193,8 @@ GLuint Material::getDiffuseMap()
 
 void Material::loadDiffuseMap(const std::string& filename)
 {
-	m_DiffuseMap = loadTextureFromFile(filename);
+	//m_DiffuseMap = loadTextureFromFile(filename);
+	m_DiffuseMap = TextureManager::getManager().getTexture(filename);
 }
 
 GLuint Material::getSpecularMap()
@@ -202,7 +204,8 @@ GLuint Material::getSpecularMap()
 
 void Material::loadSpecularMap(const std::string& filename)
 {
-	m_SpecularMap = loadTextureFromFile(filename);
+	//m_SpecularMap = loadTextureFromFile(filename);
+	m_SpecularMap = TextureManager::getManager().getTexture(filename);
 }
 
 GLuint Material::getBumpMap()
@@ -212,6 +215,7 @@ GLuint Material::getBumpMap()
 
 void Material::loadBumpMap(const std::string& filename)
 {
-	m_BumpMap = loadTextureFromFile(filename);
+	//m_BumpMap = loadTextureFromFile(filename);
+	m_BumpMap = TextureManager::getManager().getTexture(filename);
 }
 
