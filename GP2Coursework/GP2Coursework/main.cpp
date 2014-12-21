@@ -540,27 +540,53 @@ int main(int argc, char * arg[])
 	{
 		while (SDL_PollEvent(&event))
 		{
-			//Get event type
-			if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE)
+			switch (event.type)
 			{
-				//set our boolean which controls the game loop to false
-				running = false;
-			}		
-			//check for key held down by user - RT
-			else if (event.type == SDL_KEYDOWN)
-			{
-				Input::getInput().getKeyboard()->setKeyDown(event.key.keysym.sym);
+				case SDL_QUIT:
+				case SDL_WINDOWEVENT_CLOSE:
+				{
+					running = false;
+					break;
+				}
+				case SDL_KEYDOWN:
+				{
+					Input::getInput().getKeyboard()->setKeyDown(event.key.keysym.sym);
+					break;
+				}
+				case SDL_KEYUP:
+				{
+					Input::getInput().getKeyboard()->setKeyUp(event.key.keysym.sym);
+					break;
+				}
+				case SDL_MOUSEMOTION:
+				{
+					Input::getInput().getMouse()->setMousePosition(event.motion.x, event.motion.y, event.motion.xrel, event.motion.yrel);
+					SDL_WarpMouseInWindow(window, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+					break;
+				}
 			}
-			//checks for key being released by user - RT
-			else if (event.type = SDL_KEYUP)
-			{
-				Input::getInput().getKeyboard()->setKeyUp(event.key.keysym.sym);
-			}
-			//checks for mouse motion from user - RT
-			else if (event.type = SDL_MOUSEMOTION)
-			{
-				Input::getInput().getMouse()->setMousePosition(event.motion.x, event.motion.y, event.motion.xrel, event.motion.yrel);
-			}
+			////Get event type
+			//if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE)
+			//{
+			//	//set our boolean which controls the game loop to false
+			//	running = false;
+			//}		
+			////check for key held down by user - RT
+			//else if (event.type == SDL_KEYDOWN)
+			//{
+			//	Input::getInput().getKeyboard()->setKeyDown(event.key.keysym.sym);
+			//}
+			////checks for key being released by user - RT
+			//else if (event.type = SDL_KEYUP)
+			//{
+			//	Input::getInput().getKeyboard()->setKeyUp(event.key.keysym.sym);
+			//}
+			////checks for mouse motion from user - RT
+			//else if (event.type = SDL_MOUSEMOTION)
+			//{
+			//	Input::getInput().getMouse()->setMousePosition(event.motion.x, event.motion.y, event.motion.xrel, event.motion.yrel);
+
+			//}
 
 		}
 

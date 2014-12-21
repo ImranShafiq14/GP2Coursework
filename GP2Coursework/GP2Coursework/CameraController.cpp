@@ -80,6 +80,7 @@ void CameraController::update()
 		attachedCamera->getParent()->getTransform()->setRotation(currentRotation.x, currentRotation.y, currentRotation.z);
 		attachedCamera->setUp(up.x, up.y, up.z);
 		attachedCamera->setLookAt(currentPosition.x + direction.x, currentPosition.y + direction.y, currentPosition.z + direction.z);
+
 	}
 }
 
