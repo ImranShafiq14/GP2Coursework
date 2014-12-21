@@ -17,7 +17,7 @@ CameraController::CameraController()
 	attachedCamera = NULL;
 	forwardSpeed = 4;
 	strafeSpeed = 4;
-	lookSpeed = 1.0f;
+	lookSpeed = 0.1f;
 	m_Type = "Camera Controller";
 }
 
@@ -51,29 +51,29 @@ void CameraController::update()
 		/*cout << "Mouse " << mouseX << " " << mouseY << endl;
 		cout << "Direction " << direction.x << " " << direction.y << endl;*/
 
-		cout << "Camera Position " << (float)attachedCamera->getParent()->getTransform()->getPosition().x << " " <<
+		/*cout << "Camera Position " << (float)attachedCamera->getParent()->getTransform()->getPosition().x << " " <<
 			(float)attachedCamera->getParent()->getTransform()->getPosition().y << " " << 
-			(float)attachedCamera->getParent()->getTransform()->getPosition().z << endl;
+			(float)attachedCamera->getParent()->getTransform()->getPosition().z << endl;*/
 
 		if (Input::getInput().getKeyboard()->isKeyDown(SDLK_w))
 		{
 			currentPosition.z += direction.z * forwardSpeed * Timer::getTimer().getDeltaTime();
-			currentLook.z += direction.z*forwardSpeed*Timer::getTimer().getDeltaTime();
+			//currentLook.z += direction.z*forwardSpeed*Timer::getTimer().getDeltaTime();
 		}
 		else if (Input::getInput().getKeyboard()->isKeyDown(SDLK_s))
 		{
 			currentPosition.z -= direction.z * forwardSpeed * Timer::getTimer().getDeltaTime();
-			currentLook.z -= direction.z*forwardSpeed*Timer::getTimer().getDeltaTime();
+			//currentLook.z -= direction.z*forwardSpeed*Timer::getTimer().getDeltaTime();
 		}
 		else if (Input::getInput().getKeyboard()->isKeyDown(SDLK_a))
 		{
 			currentPosition += right * strafeSpeed * Timer::getTimer().getDeltaTime();
-			currentLook += right*strafeSpeed*Timer::getTimer().getDeltaTime();
+			//currentLook += right*strafeSpeed*Timer::getTimer().getDeltaTime();
 		}
 		else if (Input::getInput().getKeyboard()->isKeyDown(SDLK_d))
 		{
 			currentPosition -= right * strafeSpeed * Timer::getTimer().getDeltaTime();
-			currentLook += right*(strafeSpeed*-1)*Timer::getTimer().getDeltaTime();
+			//currentLook += right*(strafeSpeed*-1)*Timer::getTimer().getDeltaTime();
 		}
 
 		attachedCamera->getParent()->getTransform()->setPosition(currentPosition.x, currentPosition.y, currentPosition.z);
