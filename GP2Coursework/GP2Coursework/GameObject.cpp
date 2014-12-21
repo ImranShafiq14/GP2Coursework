@@ -202,3 +202,4 @@ GameObject* GameObject::getChild(int index)
 		return NULL;
 	}
 }
+

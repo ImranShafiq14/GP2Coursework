@@ -31,6 +31,8 @@ public:
 	void update();
 
 	void reset(); //RT
+
+	static vec3& calcLookAtFromAngle(const vec3& rot); //no idea if this will be used - RT
 private:
 	vec3 m_LookAt;
 	vec3 m_Up;

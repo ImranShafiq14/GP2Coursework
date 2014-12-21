@@ -4,6 +4,17 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "FBXLoader.h"
+#include "GameObject.h"
+#include "Material.h"
+#include "Mesh.h"
+#include "Camera.h"
+#include "Transform.h"
+#include "Component.h"
+#include "Light.h"
+#include "Timer.h"
+#include "SkyboxMaterial.h"
+#include "CameraController.h"
+#include "Input.h"
 
 //header for SDL2 functionality
 #include <gl\glew.h>
@@ -24,15 +35,6 @@ using glm::vec4;
 #include <glm/gtc/type_ptr.hpp>
 
 #include <vector>
-#include "GameObject.h"
-#include "Material.h"
-#include "Mesh.h"
-#include "Camera.h"
-#include "Transform.h"
-#include "Component.h"
-#include "Light.h"
-#include "Timer.h"
-#include "SkyboxMaterial.h"
 
 #ifdef _DEBUG && WIN32
 const std::string ASSET_PATH = "../assets";
@@ -63,8 +65,6 @@ vec4 ambientLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 GameObject * mainLight;
 
 GameObject * skyBox = NULL;
-
-Timer * timer; //pointer to Timer object - RT
 
 //boolean for triggering debug camera - RT
 bool debug = false;
@@ -117,9 +117,16 @@ void CleanUp()
 	}
 	displayList.clear();
 
+	Input::getInput().destroy();
+
 	SDL_GL_DeleteContext(glcontext);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
+}
+
+void initInput()
+{
+	Input::getInput().init();
 }
 
 //Function to initialise OpenGL
@@ -393,7 +400,9 @@ void update()
 		(*iter)->update();
 	}
 
-	timer->update();
+	Timer::getTimer().update();
+
+	Input::getInput().update();
 }
 
 void initialise()
@@ -404,7 +413,7 @@ void initialise()
 	mainCamera->setName("Camera");
 	
 	Transform *t = new Transform();
-	t->setPosition(0.0f, 0.0f, 10.0f);
+	t->setPosition(0.7f, 0.0f, -8.8f);
 	mainCamera->setTransform(t);
 	
 	Camera * c = new Camera();
@@ -413,8 +422,18 @@ void initialise()
 	c->setNearClip(0.1f);
 	c->setFarClip(100.0f);
 	mainCamera->setCamera(c);
+
+	//creates camera controller
+	//sets the camera to be controlled
+	//sets camera controller to be a component of the camera - RT
+	CameraController * camController = new CameraController(); 
+	camController->setCamera(c); 
+
+	mainCamera->addComponent(camController);
+
 	displayList.push_back(mainCamera);
 
+	//creates main light
 	mainLight = new GameObject();
 	mainLight->setName(std::string("MainLight"));
 	
@@ -485,9 +504,7 @@ void initialise()
 	//go->getTransform()->setRotation(0.0f, 90.0f, 0.0f);
 	//displayList.push_back(go);
 
-	timer = new Timer(); //creates Timer object - RT
-
-	timer->start(); //calls start function - RT
+	Timer::getTimer().start();
 }
 
 //Main Method - Entry Point
@@ -510,6 +527,8 @@ int main(int argc, char * arg[])
 	//Set our viewport
 	setViewport(WINDOW_WIDTH, WINDOW_HEIGHT);
 
+	initInput(); //initialises input - RT
+
 	initialise();
 
 	//sets mouse cursor to centre of window - RT
@@ -530,7 +549,9 @@ int main(int argc, char * arg[])
 			else if (event.type == SDL_MOUSEMOTION)
 			{
 
-				float deadzone = 3.5f;
+				
+
+				/*float deadzone = 3.5f;
 
 				float magnitude = sqrt((float)event.motion.x * (float)event.motion.x + (float)event.motion.y * (float)event.motion.y);
 
@@ -550,127 +571,24 @@ int main(int argc, char * arg[])
 				else
 				{
 					magnitude = 0.0f;
-				}
+				}*/
 
-				timer->stop(); //stops timer - RT
-				timer->reset(); //resets timer - RT
-				timer->start(); //restarts timer - RT
+				
 			}	
 			//check for key held down by user - RT
 			else if (event.type == SDL_KEYDOWN)
 			{
-				//checks to see which key was held down - RT
-				switch (event.key.keysym.sym)
-				{
-				//if a key pressed - RT
-				case SDLK_a:
-				{
-					
-					vec3 camPosition = mainCamera->getTransform()->getPosition();
-					camPosition.x -= 0.1f;
-					cout << camPosition.x << endl; //for debugging purposes only - RT
-					Transform *t = new Transform();
-					t->setPosition(camPosition.x, camPosition.y, camPosition.z);
-					mainCamera->setTransform(t);
-					//skyBox->setTransform(t);
-						
-					break;
-				}
-				//if d key pressed - RT
-				case SDLK_d:
-				{
-					
-					vec3 camPosition = mainCamera->getTransform()->getPosition();
-					camPosition.x += 0.1f;
-					cout << camPosition.x << endl; //for debugging purposes only - RT
-					Transform *t = new Transform();
-					t->setPosition(camPosition.x, camPosition.y, camPosition.z);
-					mainCamera->setTransform(t);
-					//skyBox->setTransform(t);
-						
-					break;
-				}
-				//if w key pressed - RT
-				case SDLK_w:
-				{
-					//only available to debug camera: player shouldn't be able to
-					//"fly" - should be constrained to ground - RT
-					if (debug == true)
-					{
-						vec3 camPosition = mainCamera->getTransform()->getPosition();
-						camPosition.y += 0.1f;
-						cout << camPosition.y << endl; //for debugging purposes only - RT
-						Transform *t = new Transform();
-						t->setPosition(camPosition.x, camPosition.y, camPosition.z);
-						mainCamera->setTransform(t);
-						//skyBox->setTransform(t);
-						
-					}
-					else
-					{
-						vec3 camPosition = mainCamera->getTransform()->getPosition();
-						camPosition.z += 0.1f;
-						cout << camPosition.z << endl; //for debugging purposes only - RT
-						Transform *t = new Transform();
-						t->setPosition(camPosition.x, camPosition.y, camPosition.z);
-						mainCamera->setTransform(t);
-						//skyBox->setTransform(t);
-					}
-					break;
-				}
-				//if s key pressed - RT
-				case SDLK_s:
-				{
-					//only available to debug camera: player shouldn't be able to 
-					//"fly" and/or "go through" ground - RT
-					if (debug == true)
-					{
-						vec3 camPosition = mainCamera->getTransform()->getPosition();
-						camPosition[1] -= 0.1f;
-						cout << camPosition.x << endl; //for debugging purposes only - RT
-						Transform *t = new Transform();
-						t->setPosition(camPosition.x, camPosition.y, camPosition.z);
-						mainCamera->setTransform(t);
-						//skyBox->setTransform(t);
-						
-					}
-					else
-					{
-						vec3 camPosition = mainCamera->getTransform()->getPosition();
-						camPosition.z -= 0.1f;
-						cout << camPosition.z << endl; //for debugging purposes only - RT
-						Transform *t = new Transform();
-						t->setPosition(camPosition.x, camPosition.y, camPosition.z);
-						mainCamera->setTransform(t);
-						//skyBox->setTransform(t);
-
-					}
-					break;
-				}
-				//if r key is pressed
-				case SDLK_r:
-				{
-					cout << "Debug mode altered" << endl; //for debugging purposes only - RT
-					debug = !debug;
-					break;
-				}
-				//if p key is pressed
-				case SDLK_p:
-				{
-					cout << "Camera reset triggered" << endl; //for debugging purposes only - RT
-					timer->reset();
-					timer->start();
-					mainCamera->getCamera()->reset(); //resets lookAt value in camera - RT
-					
-					Transform *t = new Transform();
-					t = mainCamera->getTransform();
-					//skyBox->setTransform(t);
-
-				}
-				default:
-					break;
-				}
+				Input::getInput().getKeyboard()->setKeyDown(event.key.keysym.sym);
 			}
+			else if (event.type = SDL_KEYUP)
+			{
+				Input::getInput().getKeyboard()->setKeyUp(event.key.keysym.sym);
+			}
+			else if (event.type = SDL_MOUSEMOTION)
+			{
+				Input::getInput().getMouse()->setMousePosition(event.motion.x, event.motion.y, event.motion.xrel, event.motion.yrel);
+			}
+
 		}
 
 		update();

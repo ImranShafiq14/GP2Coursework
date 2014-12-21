@@ -18,6 +18,8 @@ class Component
 		void toggleActive();
 		bool isActive();
 
+		GameObject * getParent();
+
 		void setParent(GameObject * parent);
 	protected:
 		std::string m_Type;

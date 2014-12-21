@@ -78,4 +78,16 @@ void Camera::update()
 	vec3 position = m_Parent->getTransform()->getPosition();
 	m_ViewMatrix = glm::lookAt(position, m_LookAt, m_Up);
 	m_ProjectionMatrix = glm::perspective(m_FOV, m_AspectRatio, m_NearClip, m_FarClip);
+
+}
+
+vec3& Camera::calcLookAtFromAngle(const vec3& rot)
+{
+	vec3 lookAt = vec3(1.0f, 1.0f, 1.0f);
+
+	lookAt.x = (cos(rot.x)*cos(rot.y)); 
+	lookAt.y = sin(rot.y);
+	lookAt.z = sin(rot.x)*cos(rot.y);
+
+	return lookAt;
 }

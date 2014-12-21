@@ -52,3 +52,8 @@ void Component::toggleActive()
 {
 	m_Active != m_Active;
 }
+
+GameObject * Component::getParent()
+{
+	return m_Parent;
+}

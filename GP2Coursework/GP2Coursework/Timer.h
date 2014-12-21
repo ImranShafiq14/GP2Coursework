@@ -27,6 +27,12 @@ public:
 		return m_DeltaTime;
 	}
 
+	static Timer& getTimer()
+	{
+		static Timer timer;
+		return timer;
+	}
+
 	void reset();
 
 private:
