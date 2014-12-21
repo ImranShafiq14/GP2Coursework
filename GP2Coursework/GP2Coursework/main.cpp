@@ -551,6 +551,11 @@ int main(int argc, char * arg[])
 				case SDL_KEYDOWN:
 				{
 					Input::getInput().getKeyboard()->setKeyDown(event.key.keysym.sym);
+					if (Input::getInput().getKeyboard()->isKeyDown(SDLK_ESCAPE))
+					{
+						running = false;
+						break;
+					}
 					break;
 				}
 				case SDL_KEYUP:
