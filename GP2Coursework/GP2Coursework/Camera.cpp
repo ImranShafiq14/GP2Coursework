@@ -28,9 +28,14 @@ void Camera::reset()
 	
 }
 
-vec3 Camera::getLookAt()
+vec3& Camera::getLookAt()
 {
 	return m_LookAt;
+}
+
+vec3& Camera::getUp()
+{
+	return m_Up;
 }
 
 void Camera::setLookAt(float x, float y, float z)

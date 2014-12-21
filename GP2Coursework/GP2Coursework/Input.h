@@ -3,11 +3,13 @@
 
 #include <SDL.h>
 
-#include "Keyboard.h"
-#include "Mouse.h"
-
 #include <string>
 #include <vector>
+
+#include <SDL.h>
+
+#include "Keyboard.h"
+#include "Mouse.h"
 
 using namespace std;
 

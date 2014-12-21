@@ -8,6 +8,10 @@
 #include <glm/glm.hpp>
 using glm::vec4;
 
+#include <SDL.h>
+#include <SDL_opengl.h>
+#include <gl/GLU.h>
+
 using namespace std;
 
 class BaseMaterial :public Component{

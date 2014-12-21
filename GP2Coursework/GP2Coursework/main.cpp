@@ -413,7 +413,8 @@ void initialise()
 	mainCamera->setName("Camera");
 	
 	Transform *t = new Transform();
-	t->setPosition(0.7f, 0.0f, -8.8f);
+	t->setPosition(0.0f, 0.0f, 2.0f);
+	t->setRotation(0.0f, -glm::radians(180.0f), 0.0f);
 	mainCamera->setTransform(t);
 	
 	Camera * c = new Camera();

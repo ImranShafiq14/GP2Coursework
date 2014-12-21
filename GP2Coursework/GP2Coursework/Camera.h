@@ -24,10 +24,12 @@ public:
 	void setNearClip(float nearClip);
 	void setFarClip(float farClip);
 
-	vec3 getLookAt();
+	vec3& getLookAt();
+	vec3& getUp();
 
 	mat4 getViewMatrix();
 	mat4 getProjectMatrix();
+	
 	void update();
 
 	void reset(); //RT
