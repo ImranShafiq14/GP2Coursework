@@ -143,5 +143,7 @@
     <None Include="..\assets\shaders\textureVS.glsl" />
     <None Include="..\assets\shaders\skyVS.glsl" />
     <None Include="..\assets\shaders\skyFS.glsl" />
+    <None Include="..\assets\shaders\parallaxMappingFS.glsl" />
+    <None Include="..\assets\shaders\parallaxMappingVS.glsl" />
   </ItemGroup>
 </Project>

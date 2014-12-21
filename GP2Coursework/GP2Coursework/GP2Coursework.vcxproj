@@ -127,6 +127,8 @@
     <None Include="..\assets\shaders\diffuseVS.glsl" />
     <None Include="..\assets\shaders\directionalLightTextureFS.glsl" />
     <None Include="..\assets\shaders\directionalLightTextureVS.glsl" />
+    <None Include="..\assets\shaders\parallaxMappingFS.glsl" />
+    <None Include="..\assets\shaders\parallaxMappingVS.glsl" />
     <None Include="..\assets\shaders\simpleFS.glsl" />
     <None Include="..\assets\shaders\simpleVS.glsl" />
     <None Include="..\assets\shaders\skyFS.glsl" />
