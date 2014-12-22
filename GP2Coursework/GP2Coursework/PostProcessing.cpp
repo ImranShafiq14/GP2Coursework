@@ -101,10 +101,10 @@ void PostProcessing::bind()
 
 void PostProcessing::preDraw()
 {
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D,FBOTexture);
-
 	glUseProgram(postProcessingProgram);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, FBOTexture);
+
 	GLint textureLocation = glGetUniformLocation(postProcessingProgram, "texture0");
 	glUniform1i(textureLocation, 0);
 
