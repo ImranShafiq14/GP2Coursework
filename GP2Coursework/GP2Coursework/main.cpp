@@ -17,6 +17,7 @@
 #include "Input.h"
 #include "TextureManager.h"
 #include "PostProcessing.h"
+#include "ColourFilters.h"
 
 //header for SDL2 functionality
 #include <gl\glew.h>
@@ -67,6 +68,7 @@ vec4 ambientLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 GameObject * mainLight;
 
 GameObject * skyBox = NULL;
+PostProcessing postProcessor;
 
 
 void CheckForErrors()
@@ -117,6 +119,8 @@ void CleanUp()
 		}
 	}
 	displayList.clear();
+
+	postProcessor.destroy();
 
 	Input::getInput().destroy();
 
@@ -379,6 +383,8 @@ void renderSkyBox()
 //Function to draw
 void render()
 {
+	postProcessor.bind();
+
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClearDepth(1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -389,6 +395,19 @@ void render()
 	{
 		renderGameObject((*iter));
 	}
+	//switch to normal framebuffer
+	postProcessor.preDraw();
+
+	//grab values from shader
+	GLint colourFilterLocation = postProcessor.getUniformVariableLocation("colourFilter");
+	glUniformMatrix3fv(colourFilterLocation, 1, GL_FALSE, glm::value_ptr(SEPIA_FILTER));
+
+	//draw
+	postProcessor.draw();
+
+	//post draw
+	postProcessor.postDraw();
+
 	SDL_GL_SwapWindow(window);
 }
 
@@ -473,6 +492,11 @@ void update()
 
 void initialise()
 {
+	string vsPath = ASSET_PATH + SHADER_PATH + "/passThroughVS.glsl";
+	string fsPath = ASSET_PATH + SHADER_PATH + "boxFilterBlurFS.glsl";
+
+	postProcessor.init(WINDOW_WIDTH, WINDOW_HEIGHT, vsPath, fsPath);
+
 	//createSkyBox();
 
 	mainCamera = new GameObject();

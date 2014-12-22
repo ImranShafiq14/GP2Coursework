@@ -35,9 +35,7 @@ void PostProcessing::createShader(string& vertexShaderFilename, string& fragment
 
 	glAttachShader(postProcessingProgram, vertexShaderProgram);
 	glAttachShader(postProcessingProgram, fragmentShaderProgram);
-
 	glLinkProgram(postProcessingProgram);
-
 	checkForLinkErrors(postProcessingProgram);
 
 	glDeleteShader(vertexShaderProgram);
@@ -50,7 +48,7 @@ void PostProcessing::createShader(string& vertexShaderFilename, string& fragment
 void PostProcessing::createFullScreenQuad()
 {
 	GLfloat vertices[]{
-		-1, 1,
+			-1, 1,
 			1, -1,
 			-1, 1,
 			1, 1
@@ -73,27 +71,26 @@ void PostProcessing::createFramebuffer(int width, int height)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-
 	glBindTexture(GL_TEXTURE_2D, 0);
+
 	glGenRenderbuffers(1, &depthBufferObject);
 	glBindRenderbuffer(GL_RENDERBUFFER, depthBufferObject);
-
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
 	glGenFramebuffers(1, &frameBufferObject);
 	glBindRenderbuffer(GL_FRAMEBUFFER, frameBufferObject);
-
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, FBOTexture, 0);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBufferObject);
 
 	GLenum status;
 
-	//if ((status == glCheckFramebufferStatus(GL_FRAMEBUFFER)) != GL_FRAMEBUFFER_COMPLETE)
-	//{
-	//	//BAD THINGS HAVE HAPPENED
-	//}
+	if ((status = glCheckFramebufferStatus(GL_FRAMEBUFFER)) != GL_FRAMEBUFFER_COMPLETE)
+	{
+		cout << "BUFFER IN POSTPROCESSING BROKEN SOMEHOW" << endl;
+		//BAD THINGS HAVE HAPPENED
+	}
 
 }
 
