@@ -429,24 +429,24 @@ void loadModels()
 
 		if (i == 0)
 		{
-			go->getTransform()->setPosition(1.0f, -2.0f, -6.0f);
+			go->getTransform()->setPosition(1.0f, 0.0f, -6.0f);
 		}
 		
 		if (i == 1)
 		{
-			go->getTransform()->setPosition(-7.0f, -2.0f, -6.0f);
+			go->getTransform()->setPosition(-7.0f, 0.0f, -6.0f);
 			go->getTransform()->setRotation(0.0f, 90.0f, 0.0f);
 		}
 		
 		if (i == 2)
 		{
-			go->getTransform()->setPosition(-3.0f, -2.0f, -6.0f);
+			go->getTransform()->setPosition(-3.0f, 0.0f, -6.0f);
 			go->getTransform()->setRotation(0.0f, 90.0f, 0.0f);
 		}
 		
 		if (i == 3)
 		{
-			go->getTransform()->setPosition(4.0f, -2.0f, -6.0f);
+			go->getTransform()->setPosition(5.0f, 0.0f, -6.0f);
 			go->getTransform()->setRotation(0.0f, 90.0f, 0.0f);
 		}
 		
@@ -515,6 +515,27 @@ void initialise()
 	{
 		(*iter)->init();
 	}
+
+	//Model loading of ground/terrain. 
+	std::string groundModel = ASSET_PATH + MODEL_PATH + "Ground.fbx";
+	GameObject * go = loadFBXFromFile(groundModel);
+	for (int i = 0; i < go->getChildCount(); i++)
+	{
+		Material * material = new Material();
+		material->init();
+		std::string vsPath = ASSET_PATH + SHADER_PATH + "/textureVS.glsl";
+		std::string fsPath = ASSET_PATH + SHADER_PATH + "/textureFS.glsl";
+		material->loadShader(vsPath, fsPath);
+		
+		std::string diffTexturePath = ASSET_PATH + TEXTURE_PATH + "/terrain.jpg";
+		material->loadDiffuseMap(diffTexturePath);
+		
+		go->getChild(i)->setMaterial(material);
+	}
+	go->getTransform()->setPosition(0.0f, 0.0f, 0.0f);
+	go->getTransform()->setRotation(-90.0f, 0.0f, 0.0f);
+	go->getTransform()->setScale(0.02f, 0.02f, 0.02f);
+	displayList.push_back(go);
 
 	loadModels();
 
