@@ -20,11 +20,19 @@ public:
 	{
 		return relativeMouseY;
 	}
+
+	void setMouseScroll(int mScroll);
+
+	int getMouseScroll()
+	{
+		return mouseScroll;
+	}
 private:
 	int absoluteMouseX;
 	int absoluteMouseY;
 	int relativeMouseX;
 	int relativeMouseY;
+	int mouseScroll;
 };
 
 

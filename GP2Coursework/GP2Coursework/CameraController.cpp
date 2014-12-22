@@ -19,6 +19,7 @@ CameraController::CameraController()
 	strafeSpeed = 100;
 	lookSpeed = 0.1f;
 	m_Type = "Camera Controller";
+	debugMode = false;
 }
 
 CameraController::~CameraController()
@@ -75,6 +76,24 @@ void CameraController::update()
 			currentPosition -= right * strafeSpeed * Timer::getTimer().getDeltaTime();
 			//currentLook += right*(strafeSpeed*-1)*Timer::getTimer().getDeltaTime();
 		}
+		else if (Input::getInput().getKeyboard()->isKeyDown(SDLK_p))
+		{
+			debugMode = !debugMode;
+		}
+		else if (Input::getInput().getMouse()->getMouseScroll() != 0)
+		{
+			if (debugMode)
+			{
+				if (Input::getInput().getMouse()->getMouseScroll() == 1)
+				{
+					currentPosition.y += direction.y * forwardSpeed * Timer::getTimer().getDeltaTime();
+				}
+				else if (Input::getInput().getMouse()->getMouseScroll() == -1)
+				{
+					currentPosition.y -= direction.y * forwardSpeed * Timer::getTimer().getDeltaTime();
+				}
+			}
+		}
 
 		attachedCamera->getParent()->getTransform()->setPosition(currentPosition.x, currentPosition.y, currentPosition.z);
 		attachedCamera->getParent()->getTransform()->setRotation(currentRotation.x, currentRotation.y, currentRotation.z);
@@ -87,4 +106,14 @@ void CameraController::update()
 void CameraController::setCamera(Camera * cam)
 {
 	attachedCamera = cam;
+}
+
+void CameraController::toggleDebugMode()
+{
+	debugMode = !debugMode;
+}
+
+bool CameraController::getDebugMode()
+{
+	return debugMode;
 }

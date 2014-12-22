@@ -67,9 +67,6 @@ GameObject * mainLight;
 
 GameObject * skyBox = NULL;
 
-//boolean for triggering debug camera - RT
-bool debug = false;
-
 void CheckForErrors()
 {
 	GLenum error;
@@ -584,6 +581,12 @@ int main(int argc, char * arg[])
 				{
 					Input::getInput().getMouse()->setMousePosition(event.motion.x, event.motion.y, event.motion.xrel, event.motion.yrel);
 					SDL_WarpMouseInWindow(window, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+					break;
+				}
+				case SDL_MOUSEWHEEL:
+				{
+					Input::getInput().getMouse()->setMouseScroll(event.wheel.y);
+					cout << "Mouse wheel scroll " << event.wheel.x << " " << event.wheel.y << endl;
 					break;
 				}
 			}
