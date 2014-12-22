@@ -91,6 +91,7 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="PostProcessing.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SkyboxMaterial.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -101,6 +102,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraController.h" />
+    <ClInclude Include="ColourFilters.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="FBXLoader.h" />
     <ClInclude Include="GameObject.h" />
@@ -110,6 +112,7 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="PostProcessing.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SkyboxMaterial.h" />
     <ClInclude Include="Texture.h" />
@@ -121,6 +124,7 @@
   <ItemGroup>
     <None Include="..\assets\shaders\ambientFS.glsl" />
     <None Include="..\assets\shaders\ambientVS.glsl" />
+    <None Include="..\assets\shaders\boxFilterBlurFS.glsl" />
     <None Include="..\assets\shaders\bumpMappingFS.glsl" />
     <None Include="..\assets\shaders\bumpMappingVS.glsl" />
     <None Include="..\assets\shaders\diffuseFS.glsl" />
@@ -129,6 +133,7 @@
     <None Include="..\assets\shaders\directionalLightTextureVS.glsl" />
     <None Include="..\assets\shaders\parallaxMappingFS.glsl" />
     <None Include="..\assets\shaders\parallaxMappingVS.glsl" />
+    <None Include="..\assets\shaders\passThroughVS.glsl" />
     <None Include="..\assets\shaders\simpleFS.glsl" />
     <None Include="..\assets\shaders\simpleVS.glsl" />
     <None Include="..\assets\shaders\skyFS.glsl" />

@@ -16,6 +16,7 @@
 #include "CameraController.h"
 #include "Input.h"
 #include "TextureManager.h"
+#include "PostProcessing.h"
 
 //header for SDL2 functionality
 #include <gl\glew.h>
@@ -66,6 +67,7 @@ vec4 ambientLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 GameObject * mainLight;
 
 GameObject * skyBox = NULL;
+
 
 void CheckForErrors()
 {

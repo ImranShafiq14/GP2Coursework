@@ -69,6 +69,9 @@
     <ClCompile Include="TextureManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PostProcessing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -125,6 +128,12 @@
     <ClInclude Include="TextureManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PostProcessing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColourFilters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\assets\shaders\ambientFS.glsl" />
@@ -145,5 +154,7 @@
     <None Include="..\assets\shaders\skyFS.glsl" />
     <None Include="..\assets\shaders\parallaxMappingFS.glsl" />
     <None Include="..\assets\shaders\parallaxMappingVS.glsl" />
+    <None Include="..\assets\shaders\boxFilterBlurFS.glsl" />
+    <None Include="..\assets\shaders\passThroughVS.glsl" />
   </ItemGroup>
 </Project>
