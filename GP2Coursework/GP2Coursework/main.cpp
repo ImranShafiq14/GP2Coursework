@@ -431,7 +431,7 @@ void loadModels()
 
 		if (i == 0) //armoredrecon
 		{
-			go->getTransform()->setPosition(0.0f, 0.0f, -25.0f);
+			go->getTransform()->setPosition(0.0f, 0.0f, -6.0f);
 		}
 		
 		if (i == 1) //tank 1
@@ -556,6 +556,27 @@ void initialise()
 	go->getTransform()->setPosition(0.0f, 0.0f, 0.0f);
 	go->getTransform()->setRotation(-90.0f, 0.0f, 0.0f);
 	go->getTransform()->setScale(0.02f, 0.02f, 0.02f);
+	displayList.push_back(go);
+
+	//Loading of helicopter model - IS
+	std::string heliModel = ASSET_PATH + MODEL_PATH + "Helicopter.fbx";
+	go = loadFBXFromFile(heliModel);
+	for (int i = 0; i < go->getChildCount(); i++)
+	{
+		Material * material = new Material();
+		material->init();
+		std::string vsPath = ASSET_PATH + SHADER_PATH + "/textureVS.glsl";
+		std::string fsPath = ASSET_PATH + SHADER_PATH + "/textureFS.glsl";
+		material->loadShader(vsPath, fsPath);
+		
+		std::string diffTexturePath = ASSET_PATH + TEXTURE_PATH + "/blackhawk.jpg";
+		material->loadDiffuseMap(diffTexturePath);
+		
+		go->getChild(i)->setMaterial(material);
+	}
+	go->getTransform()->setPosition(0.0f, 0.71f, -25.0f);
+	go->getTransform()->setRotation(0.0f, 45.0f, 0.0f);
+	go->getTransform()->setScale(1.0f, 1.0f, 1.0f);
 	displayList.push_back(go);
 
 	loadModels();
