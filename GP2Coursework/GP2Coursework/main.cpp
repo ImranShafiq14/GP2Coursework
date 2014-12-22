@@ -261,7 +261,6 @@ void createSkyBox()
 
 }
 
-
 void renderGameObject(GameObject *pObject)
 {
 	if (!pObject)
