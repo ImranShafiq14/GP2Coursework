@@ -53,13 +53,6 @@ void CameraController::update()
 
 		glm::vec3 up = glm::cross(direction, right);
 
-		/*cout << "Mouse " << mouseX << " " << mouseY << endl;
-		cout << "Direction " << direction.x << " " << direction.y << endl;*/
-
-		/*cout << "Camera Position " << (float)attachedCamera->getParent()->getTransform()->getPosition().x << " " <<
-			(float)attachedCamera->getParent()->getTransform()->getPosition().y << " " << 
-			(float)attachedCamera->getParent()->getTransform()->getPosition().z << endl;*/
-
 		//polls keyboard input from user and moves camera as appropriate
 		if (Input::getInput().getKeyboard()->isKeyDown(SDLK_w))
 		{
@@ -100,6 +93,11 @@ void CameraController::update()
 					currentPosition.y -= direction.y * forwardSpeed * Timer::getTimer().getDeltaTime();
 				}
 			}
+		}
+		
+		if (!debugMode)
+		{
+			currentPosition.y = 2.0f;
 		}
 
 		//updates camera values- RT
