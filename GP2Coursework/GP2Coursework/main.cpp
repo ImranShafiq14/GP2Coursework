@@ -394,20 +394,20 @@ void render()
 
 void loadModels()
 {
-	std::string models[4] = { "armoredrecon.fbx", "Tank1.fbx", "Tank2.fbx", "Tank3.fbx" };
-	std::string diffuseTextures[4] = { "/armoredrecon_diff.png", "/Tank1DF.png", "/Tank2DF.png", "/Tank3DF.png" };
-	std::string specularTextures[4] = { "/armoredrecon_spec.png", "/Tank1_S.png", "/Tank2_S.png", "/Tank3_S.png" };
-	std::string bumpTextures[4] = { "/armoredrecon_N.png", "/Tank1_N.png", "/Tank2_N.png", "/Tank3_N.png" };
-	std::string heightTextures[4] = { "/armoredrecon_Height.png", "/Tank1_H.png", "/Tank2_H.png", "/Tank3_H.png" };
-
-	for (int i = 0; i < 4; i++)
+	std::string models[7] = { "armoredrecon.fbx", "Tank1.fbx", "Tank2.fbx", "Tank3.fbx", "Tank4.fbx", "Tank5.fbx", "Tank6.fbx" };
+	std::string diffuseTextures[7] = { "/armoredrecon_diff.png", "/Tank1DF.png", "/Tank2DF.png", "/Tank3DF.png", "/Tank4DF.png", "/Tank5DF.png", "/Tank6DF.png" };
+	std::string specularTextures[7] = { "/armoredrecon_spec.png", "/Tank1_S.png", "/Tank2_S.png", "/Tank3_S.png", "/Tank4_S.png", "/Tank5_S.png", "/Tank6_S.png" };
+	std::string bumpTextures[7] = { "/armoredrecon_N.png", "/Tank1_N.png", "/Tank2_N.png", "/Tank3_N.png", "/Tank4_N.png", "/Tank5_N.png", "/Tank6_N.png" };
+	std::string heightTextures[7] = { "/armoredrecon_Height.png", "/Tank1_H.png", "/Tank2_H.png", "/Tank3_H.png", "/Tank4_H.png", "/Tank5_H.png", "/Tank6_H.png" };
+	
+	for (int i = 0; i < 7; i++)
 	{
 		GameObject * go = loadFBXFromFile(ASSET_PATH + MODEL_PATH + models[i]);
 		for (int model = 0; model < go->getChildCount(); model++)
 		{
 			Material * material = new Material();
 			material->init();
-
+			
 			std::string vsPath = ASSET_PATH + SHADER_PATH + "/parallaxMappingVS.glsl";
 			std::string fsPath = ASSET_PATH + SHADER_PATH + "/parallaxMappingFS.glsl";
 			//std::string vsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingVS.glsl";
@@ -425,36 +425,55 @@ void loadModels()
 			
 			std::string heightTexturePath = ASSET_PATH + TEXTURE_PATH + heightTextures[i];
 			material->loadHeightMap(heightTexturePath);
-
+			
 			go->getChild(model)->setMaterial(material);
 		}
 
-		if (i == 0)
+		if (i == 0) //armoredrecon
 		{
-			go->getTransform()->setPosition(1.0f, 0.0f, -6.0f);
+			go->getTransform()->setPosition(0.0f, 0.0f, -25.0f);
 		}
 		
-		if (i == 1)
+		if (i == 1) //tank 1
 		{
-			go->getTransform()->setPosition(-7.0f, 0.0f, -6.0f);
-			go->getTransform()->setRotation(0.0f, 90.0f, 0.0f);
+			go->getTransform()->setPosition(-10.0f, 0.0f, -5.0f);
+			go->getTransform()->setRotation(0.0f, 180.0f, 0.0f);
 		}
 		
-		if (i == 2)
+		if (i == 2) //tank 2
 		{
-			go->getTransform()->setPosition(-3.0f, 0.0f, -6.0f);
-			go->getTransform()->setRotation(0.0f, 90.0f, 0.0f);
+			go->getTransform()->setPosition(-10.0f, 0.0f, -10.0f);
+			go->getTransform()->setRotation(0.0f, 180.0f, 0.0f);
 		}
 		
-		if (i == 3)
+		if (i == 3) //tank 3
 		{
-			go->getTransform()->setPosition(5.0f, 0.0f, -6.0f);
-			go->getTransform()->setRotation(0.0f, 90.0f, 0.0f);
+			go->getTransform()->setPosition(-10.0f, 0.0f, -15.0f);
+			go->getTransform()->setRotation(0.0f, 180.0f, 0.0f);
+		}
+		
+		if (i == 4) //tank 4
+		{
+			go->getTransform()->setPosition(10.0f, 0.0f, -5.0f);
+			go->getTransform()->setRotation(0.0f, 0.0f, 0.0f);
+		}
+		
+		if (i == 5) //tank 5
+		{
+			go->getTransform()->setPosition(10.0f, 0.0f, -10.0f);
+			go->getTransform()->setRotation(0.0f, 0.0f, 0.0f);
+		}
+		
+		if (i == 6) //tank 6
+		{
+			go->getTransform()->setPosition(10.0f, 0.0f, -15.0f);
+			go->getTransform()->setRotation(0.0f, 0.0f, 0.0f);
 		}
 		
 		displayList.push_back(go);
 	}
 }
+
 
 //Function to update game state
 void update()
