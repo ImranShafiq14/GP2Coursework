@@ -4,6 +4,8 @@ using namespace std;
 
 bool ShadowMapping::init()
 {
+	
+
 	if (!GLEW_ARB_depth_texture || !GLEW_ARB_shadow)
 	{
 		return 0;
@@ -43,7 +45,7 @@ bool ShadowMapping::init()
 	glEnable(GL_COLOR_MATERIAL);
 
 	//White specular material color, shininess 16
-	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+	glMaterialfv(GL_FRONT, GL_SPECULAR,
 	glMaterialf(GL_FRONT, GL_SHININESS, 16.0f);
 
 	//Calculate & save matrices
