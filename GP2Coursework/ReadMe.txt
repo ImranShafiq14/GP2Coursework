@@ -23,10 +23,10 @@ Imran
 
 Model loading
 Parallax Mapping
-Texture/Mesh Manager
+Resource Managment(Texture Manager, Mesh Manager)
 Initial set up of project
-Design side of project(e.g. laying out/designing scene/level etc.)
-Finding extra required models such as Ground and Helicopter. 
+Design side of project(e.g. laying out/designing/planning scene/level etc.)
+Finding extra required models such as Ground and Helicopter models. 
 Conversion of Ground and Helicopter models into FBX models.
 
 Ross
@@ -37,4 +37,11 @@ All Skybox classes
 Timer class
 Post Processing
 
-Each member contributed in finding and fixing bugs in each other's code
+P.S. The following techniques/tasks were implemented but do not work correctly, as a result, these
+implementations were not committed to the master branch and are contained in seperate branches from the 
+master/Coursework-Submission branches:
+- Post Processing (contained in the 'PostProcessingTest' branch)
+- Mesh Manager (contained in the 'MeshManagerTest' branch)
+
+
+Each member contributed in finding and fixing bugs in each other's code.
