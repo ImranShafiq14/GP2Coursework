@@ -127,6 +127,7 @@
     <None Include="..\assets\shaders\boxFilterBlurFS.glsl" />
     <None Include="..\assets\shaders\bumpMappingFS.glsl" />
     <None Include="..\assets\shaders\bumpMappingVS.glsl" />
+    <None Include="..\assets\shaders\colourFilterPostFS.glsl" />
     <None Include="..\assets\shaders\diffuseFS.glsl" />
     <None Include="..\assets\shaders\diffuseVS.glsl" />
     <None Include="..\assets\shaders\directionalLightTextureFS.glsl" />

@@ -42,6 +42,9 @@ void PostProcessing::createShader(string& vertexShaderFilename, string& fragment
 	glDeleteShader(fragmentShaderProgram);
 
 	glBindAttribLocation(postProcessingProgram, 0, "vertexPosition");
+	glBindAttribLocation(postProcessingProgram, 1, "textureCoords");
+	glBindAttribLocation(postProcessingProgram, 2, "colourFilter");
+	glBindAttribLocation(postProcessingProgram, 3, "FragColor");
 
 }
 
@@ -80,7 +83,7 @@ void PostProcessing::createFramebuffer(int width, int height)
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
 	glGenFramebuffers(1, &frameBufferObject);
-	glBindRenderbuffer(GL_FRAMEBUFFER, frameBufferObject);
+	glBindFramebuffer(GL_FRAMEBUFFER, frameBufferObject);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, FBOTexture, 0);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBufferObject);
 
@@ -101,10 +104,10 @@ void PostProcessing::bind()
 
 void PostProcessing::preDraw()
 {
-	glUseProgram(postProcessingProgram);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, FBOTexture);
 
+	glUseProgram(postProcessingProgram);
 	GLint textureLocation = glGetUniformLocation(postProcessingProgram, "texture0");
 	glUniform1i(textureLocation, 0);
 

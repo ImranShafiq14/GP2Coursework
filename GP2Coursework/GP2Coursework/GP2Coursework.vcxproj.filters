@@ -156,5 +156,6 @@
     <None Include="..\assets\shaders\parallaxMappingVS.glsl" />
     <None Include="..\assets\shaders\boxFilterBlurFS.glsl" />
     <None Include="..\assets\shaders\passThroughVS.glsl" />
+    <None Include="..\assets\shaders\colourFilterPostFS.glsl" />
   </ItemGroup>
 </Project>
