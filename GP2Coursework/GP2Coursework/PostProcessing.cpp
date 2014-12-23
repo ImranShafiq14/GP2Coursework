@@ -42,9 +42,6 @@ void PostProcessing::createShader(string& vertexShaderFilename, string& fragment
 	glDeleteShader(fragmentShaderProgram);
 
 	glBindAttribLocation(postProcessingProgram, 0, "vertexPosition");
-	glBindAttribLocation(postProcessingProgram, 1, "textureCoords");
-	glBindAttribLocation(postProcessingProgram, 2, "colourFilter");
-	glBindAttribLocation(postProcessingProgram, 3, "FragColor");
 
 }
 
