@@ -579,6 +579,69 @@ void initialise()
 	go->getTransform()->setScale(1.0f, 1.0f, 1.0f);
 	displayList.push_back(go);
 
+	///Barn Model Laoding
+
+	std::string barnRoofModel = ASSET_PATH + MODEL_PATH + "barnroof.fbx";
+	go = loadFBXFromFile(barnRoofModel);
+	for (int i = 0; i < go->getChildCount(); i++)
+	{
+		Material * material = new Material();
+		material->init();
+		std::string vsPath = ASSET_PATH + SHADER_PATH + "/textureVS.glsl";
+		std::string fsPath = ASSET_PATH + SHADER_PATH + "/textureFS.glsl";
+		material->loadShader(vsPath, fsPath);
+
+		std::string diffTexturePath = ASSET_PATH + TEXTURE_PATH + "/wood.boards.jpg";
+		material->loadDiffuseMap(diffTexturePath);
+
+		go->getChild(i)->setMaterial(material);
+	}
+	go->getTransform()->setPosition(-2.67f, 1.6f, 25.0f);
+	go->getTransform()->setRotation(0.0f, 90.0f, 0.0f);
+	go->getTransform()->setScale(0.03f, 0.03f, 0.03f);
+	displayList.push_back(go);
+
+
+	std::string barnWallModel = ASSET_PATH + MODEL_PATH + "barnwall.fbx";
+	go = loadFBXFromFile(barnWallModel);
+	for (int i = 0; i < go->getChildCount(); i++)
+	{
+		Material * material = new Material();
+		material->init();
+		std::string vsPath = ASSET_PATH + SHADER_PATH + "/textureVS.glsl";
+		std::string fsPath = ASSET_PATH + SHADER_PATH + "/textureFS.glsl";
+		material->loadShader(vsPath, fsPath);
+
+		std::string diffTexturePath = ASSET_PATH + TEXTURE_PATH + "/wood.boards.jpg";
+		material->loadDiffuseMap(diffTexturePath);
+
+		go->getChild(i)->setMaterial(material);
+	}
+	go->getTransform()->setPosition(0.0f, 0.0f, 25.0f);
+	go->getTransform()->setRotation(0.0f, 0.0f, 0.0f);
+	go->getTransform()->setScale(0.03f, 0.03f, 0.03f);
+	displayList.push_back(go);
+
+	std::string barnFloorModel = ASSET_PATH + MODEL_PATH + "barnfloor.fbx";
+	go = loadFBXFromFile(barnFloorModel);
+	for (int i = 0; i < go->getChildCount(); i++)
+	{
+		Material * material = new Material();
+		material->init();
+		std::string vsPath = ASSET_PATH + SHADER_PATH + "/textureVS.glsl";
+		std::string fsPath = ASSET_PATH + SHADER_PATH + "/textureFS.glsl";
+		material->loadShader(vsPath, fsPath);
+
+		std::string diffTexturePath = ASSET_PATH + TEXTURE_PATH + "/wood_batten.jpg";
+		material->loadDiffuseMap(diffTexturePath);
+
+		go->getChild(i)->setMaterial(material);
+	}
+	go->getTransform()->setPosition(0.0f, 0.0f, 25.0f);
+	go->getTransform()->setRotation(0.0f, 0.0f, 0.0f);
+	go->getTransform()->setScale(0.03f, 0.03f, 0.03f);
+	displayList.push_back(go);
+
 	loadModels();
 
 	Timer::getTimer().start();
