@@ -618,7 +618,7 @@ void initialise()
 		go->getChild(i)->setMaterial(material);
 	}
 	go->getTransform()->setPosition(0.0f, 0.0f, 25.0f);
-	go->getTransform()->setRotation(0.0f, 0.0f, 0.0f);
+	go->getTransform()->setRotation(270.0f, 0.0f, 180.0f);
 	go->getTransform()->setScale(0.03f, 0.03f, 0.03f);
 	displayList.push_back(go);
 
