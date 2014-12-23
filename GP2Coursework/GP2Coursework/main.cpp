@@ -555,7 +555,7 @@ void initialise()
 	mainLight->setName(std::string("MainLight"));
 	
 	Transform * trans = new Transform();
-	trans->setPosition(0.0f, 0.0f, 0.0f);
+	trans->setPosition(0.0f, 20.0f, 0.0f);
 	mainLight->setTransform(trans);
 	
 	Light * light = new Light();
