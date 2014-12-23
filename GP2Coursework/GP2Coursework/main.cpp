@@ -394,13 +394,13 @@ void render()
 
 void loadModels()
 {
-	std::string models[7] = { "armoredrecon.fbx", "Tank1.fbx", "Tank2.fbx", "Tank3.fbx", "Tank4.fbx", "Tank5.fbx", "Tank6.fbx" };
-	std::string diffuseTextures[7] = { "/armoredrecon_diff.png", "/Tank1DF.png", "/Tank2DF.png", "/Tank3DF.png", "/Tank4DF.png", "/Tank5DF.png", "/Tank6DF.png" };
-	std::string specularTextures[7] = { "/armoredrecon_spec.png", "/Tank1_S.png", "/Tank2_S.png", "/Tank3_S.png", "/Tank4_S.png", "/Tank5_S.png", "/Tank6_S.png" };
-	std::string bumpTextures[7] = { "/armoredrecon_N.png", "/Tank1_N.png", "/Tank2_N.png", "/Tank3_N.png", "/Tank4_N.png", "/Tank5_N.png", "/Tank6_N.png" };
-	std::string heightTextures[7] = { "/armoredrecon_Height.png", "/Tank1_H.png", "/Tank2_H.png", "/Tank3_H.png", "/Tank4_H.png", "/Tank5_H.png", "/Tank6_H.png" };
+	std::string models[8] = { "armoredrecon.fbx", "Tank1.fbx", "Tank2.fbx", "Tank3.fbx", "Tank4.fbx", "Tank5.fbx", "Tank6.fbx", "armoredrecon.fbx" };
+	std::string diffuseTextures[8] = { "/armoredrecon_diff.png", "/Tank1DF.png", "/Tank2DF.png", "/Tank3DF.png", "/Tank4DF.png", "/Tank5DF.png", "/Tank6DF.png", "/armoredrecon_diff.png" };
+	std::string specularTextures[8] = { "/armoredrecon_spec.png", "/Tank1_S.png", "/Tank2_S.png", "/Tank3_S.png", "/Tank4_S.png", "/Tank5_S.png", "/Tank6_S.png", "/armoredrecon_spec.png" };
+	std::string bumpTextures[8] = { "/armoredrecon_N.png", "/Tank1_N.png", "/Tank2_N.png", "/Tank3_N.png", "/Tank4_N.png", "/Tank5_N.png", "/Tank6_N.png", "/armoredrecon_N.png" };
+	std::string heightTextures[8] = { "/armoredrecon_Height.png", "/Tank1_H.png", "/Tank2_H.png", "/Tank3_H.png", "/Tank4_H.png", "/Tank5_H.png", "/Tank6_H.png", "/armoredrecon_Height.png" };
 	
-	for (int i = 0; i < 7; i++)
+	for (int i = 0; i < 8; i++)
 	{
 		GameObject * go = loadFBXFromFile(ASSET_PATH + MODEL_PATH + models[i]);
 		for (int model = 0; model < go->getChildCount(); model++)
@@ -429,45 +429,52 @@ void loadModels()
 			go->getChild(model)->setMaterial(material);
 		}
 
-		if (i == 0) //armoredrecon
+		if (i == 0) //armoredrecon 1
 		{
-			go->getTransform()->setPosition(0.0f, 0.0f, -6.0f);
+			go->getTransform()->setPosition(-5.0f, 0.0f, 20.0f);
+			go->getTransform()->setRotation(0.0f, 150.0f, 0.0f);
 		}
 		
 		if (i == 1) //tank 1
 		{
-			go->getTransform()->setPosition(-10.0f, 0.0f, -5.0f);
-			go->getTransform()->setRotation(0.0f, 180.0f, 0.0f);
+			go->getTransform()->setPosition(-10.0f, 0.0f, 10.0f);
+			go->getTransform()->setRotation(0.0f, 215.0f, 0.0f);
 		}
 		
 		if (i == 2) //tank 2
 		{
-			go->getTransform()->setPosition(-10.0f, 0.0f, -10.0f);
+			go->getTransform()->setPosition(-10.0f, 0.0f, 0.0f);
 			go->getTransform()->setRotation(0.0f, 180.0f, 0.0f);
 		}
 		
 		if (i == 3) //tank 3
 		{
-			go->getTransform()->setPosition(-10.0f, 0.0f, -15.0f);
-			go->getTransform()->setRotation(0.0f, 180.0f, 0.0f);
+			go->getTransform()->setPosition(-10.0f, 0.0f, -10.0f);
+			go->getTransform()->setRotation(0.0f, 135.0f, 0.0f);
 		}
 		
 		if (i == 4) //tank 4
 		{
-			go->getTransform()->setPosition(10.0f, 0.0f, -5.0f);
-			go->getTransform()->setRotation(0.0f, 0.0f, 0.0f);
+			go->getTransform()->setPosition(10.0f, 0.0f, 10.0f);
+			go->getTransform()->setRotation(0.0f, 315.0f, 0.0f);
 		}
 		
 		if (i == 5) //tank 5
 		{
-			go->getTransform()->setPosition(10.0f, 0.0f, -10.0f);
+			go->getTransform()->setPosition(10.0f, 0.0f, 0.0f);
 			go->getTransform()->setRotation(0.0f, 0.0f, 0.0f);
 		}
 		
 		if (i == 6) //tank 6
 		{
-			go->getTransform()->setPosition(10.0f, 0.0f, -15.0f);
-			go->getTransform()->setRotation(0.0f, 0.0f, 0.0f);
+			go->getTransform()->setPosition(10.0f, 0.0f, -10.0f);
+			go->getTransform()->setRotation(0.0f, 45.0f, 0.0f);
+		}
+
+		if (i == 7) //armoredrecon 2
+		{
+			go->getTransform()->setPosition(5.0f, 0.0f, 20.0f);
+			go->getTransform()->setRotation(0.0f, 210.0f, 0.0f);
 		}
 		
 		displayList.push_back(go);
