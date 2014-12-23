@@ -125,6 +125,7 @@ void CleanUp()
 	SDL_Quit();
 }
 
+//Initialises classes to handle user input - RT
 void initInput()
 {
 	Input::getInput().init();
@@ -263,6 +264,7 @@ void createSkyBox()
 
 }
 
+//called when an object needs rendered on-screen - RT
 void renderGameObject(GameObject *pObject)
 {
 	if (!pObject)
@@ -392,6 +394,7 @@ void render()
 	SDL_GL_SwapWindow(window);
 }
 
+//function that loads all models needed in scene - IS
 void loadModels()
 {
 	std::string models[8] = { "armoredrecon.fbx", "Tank1.fbx", "Tank2.fbx", "Tank3.fbx", "Tank4.fbx", "Tank5.fbx", "Tank6.fbx", "armoredrecon.fbx" };
@@ -521,6 +524,7 @@ void update()
 	Input::getInput().update();
 }
 
+//called upon program initialising - RT
 void initialise()
 {
 	//createSkyBox();
@@ -568,7 +572,7 @@ void initialise()
 		(*iter)->init();
 	}
 
-	//Model loading of ground/terrain. 
+	//Model loading of ground/terrain - IS
 	std::string groundModel = ASSET_PATH + MODEL_PATH + "Ground.fbx";
 	GameObject * go = loadFBXFromFile(groundModel);
 	for (int i = 0; i < go->getChildCount(); i++)
@@ -645,6 +649,7 @@ int main(int argc, char * arg[])
 	SDL_Event event;
 	while (running)
 	{
+		//Polls SDL event
 		while (SDL_PollEvent(&event))
 		{
 			switch (event.type)
@@ -652,11 +657,13 @@ int main(int argc, char * arg[])
 				case SDL_QUIT:
 				case SDL_WINDOWEVENT_CLOSE:
 				{
+					//executes when window is closed - RT
 					running = false;
 					break;
 				}
 				case SDL_KEYDOWN:
 				{
+					//executes when user has pressed a key - RT
 					Input::getInput().getKeyboard()->setKeyDown(event.key.keysym.sym);
 					if (Input::getInput().getKeyboard()->isKeyDown(SDLK_ESCAPE))
 					{
@@ -667,17 +674,20 @@ int main(int argc, char * arg[])
 				}
 				case SDL_KEYUP:
 				{
+					//executes when a user ISN'T pressing a key
 					Input::getInput().getKeyboard()->setKeyUp(event.key.keysym.sym);
 					break;
 				}
 				case SDL_MOUSEMOTION:
 				{
+					//executes when user moves the mouse - RT
 					Input::getInput().getMouse()->setMousePosition(event.motion.x, event.motion.y, event.motion.xrel, event.motion.yrel);
 					SDL_WarpMouseInWindow(window, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 					break;
 				}
 				case SDL_MOUSEWHEEL:
 				{
+					//executes when user moves the mouse wheel - RT
 					Input::getInput().getMouse()->setMouseScroll(event.wheel.y);
 					cout << "Mouse wheel scroll " << event.wheel.x << " " << event.wheel.y << endl;
 					break;

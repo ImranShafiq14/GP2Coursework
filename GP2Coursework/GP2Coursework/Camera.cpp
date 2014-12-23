@@ -20,7 +20,7 @@ Camera::~Camera()
 
 }
 
-//RT
+
 void Camera::reset()
 {
 	m_LookAt = vec3(0.000f, 0.000f, 0.000f);

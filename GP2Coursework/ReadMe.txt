@@ -20,6 +20,7 @@ Ross
 All Input classes (keyboard and mouse also)
 All Camera classes (including camera controller)
 All Skybox classes
+Timer class
 Post Processing
 
 Each member contributed in finding and fixing bugs in each other's code

@@ -1,16 +1,19 @@
 #include "TextureManager.h"
 
+//Constructor for TextureManager - IS
 TextureManager::TextureManager()
 {
 	m_LoadedTexturesMap.clear();
 	m_LoadedTexturesVector.clear();
 }
 
+//Deconstructor for TextureManager - IS
 TextureManager::~TextureManager()
 {
 
 }
 
+//Clears all of the textures held by the class - IS
 void TextureManager::clear()
 {
 	glDeleteTextures((int)m_LoadedTexturesVector.size(), &m_LoadedTexturesVector[0]);
@@ -18,6 +21,7 @@ void TextureManager::clear()
 	m_LoadedTexturesMap.clear();
 }
 
+//adds texture to texture manager - IS
 GLuint TextureManager::getTexture(const std::string &name)
 {
 	GLuint textureID = 0;

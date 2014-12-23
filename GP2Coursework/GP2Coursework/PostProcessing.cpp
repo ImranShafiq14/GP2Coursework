@@ -1,6 +1,8 @@
 #include "PostProcessing.h"
 #include "Shader.h"
 
+
+//Constructor for PostProcessing class - RT
 PostProcessing::PostProcessing()
 {
 	frameBufferObject = 0;
@@ -10,11 +12,13 @@ PostProcessing::PostProcessing()
 	postProcessingProgram = 0;
 }
 
+//Deconstructor for PostProceesing class - RT
 PostProcessing::~PostProcessing()
 {
 
 }
 
+//called upon initialising - RT
 void PostProcessing::init(int width, int height, string& vertexShaderFilename, string& fragmentShaderFilename)
 {
 	createFramebuffer(width, height);
@@ -23,6 +27,7 @@ void PostProcessing::init(int width, int height, string& vertexShaderFilename, s
 
 }
 
+//creates shaders used in Post Processing - RT
 void PostProcessing::createShader(string& vertexShaderFilename, string& fragmentShaderFilename)
 {
 	GLuint vertexShaderProgram = 0;
@@ -47,6 +52,7 @@ void PostProcessing::createShader(string& vertexShaderFilename, string& fragment
 
 }
 
+//creates the quad that is rendered to in the Post Processing - RT
 void PostProcessing::createFullScreenQuad()
 {
 	GLfloat vertices[]{
@@ -63,6 +69,7 @@ void PostProcessing::createFullScreenQuad()
 
 }
 
+//creates the frame buffer - RT
 void PostProcessing::createFramebuffer(int width, int height)
 {
 	glActiveTexture(GL_TEXTURE0);
@@ -90,18 +97,21 @@ void PostProcessing::createFramebuffer(int width, int height)
 
 	GLenum status;
 
-	//if ((status == glCheckFramebufferStatus(GL_FRAMEBUFFER)) != GL_FRAMEBUFFER_COMPLETE)
-	//{
-	//	//BAD THINGS HAVE HAPPENED
-	//}
+	if ((status == glCheckFramebufferStatus(GL_FRAMEBUFFER)) != GL_FRAMEBUFFER_COMPLETE)
+	{
+		cout << "FRAME BUFFER IS BROKEN PLEASE FIX" << endl;
+		//BAD THINGS HAVE HAPPENED
+	}
 
 }
 
+//Binds the frame buffer - RT
 void PostProcessing::bind()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBufferObject);
 }
 
+//Called before the Post Processing effect is drawn - RT
 void PostProcessing::preDraw()
 {
 	glActiveTexture(GL_TEXTURE0);
@@ -116,6 +126,7 @@ void PostProcessing::preDraw()
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
+//called AFTER Post Processing effect is drawn - RT
 void PostProcessing::postDraw()
 {
 	glDisableVertexAttribArray(0);
@@ -123,6 +134,8 @@ void PostProcessing::postDraw()
 
 
 }
+
+//Draws Post Processing effect to screen - RT
 void PostProcessing::draw()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -131,6 +144,7 @@ void PostProcessing::draw()
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
+//called when the program is closing - RT
 void PostProcessing::destroy()
 {
 	glDeleteBuffers(1, &fullScreenVBO);
@@ -140,6 +154,8 @@ void PostProcessing::destroy()
 	glDeleteFramebuffers(1, &frameBufferObject);
 
 }
+
+//called when the program needs the location of a Uniform - RT
 GLint PostProcessing::getUniformVariableLocation(const string& name)
 {
 	return glGetUniformLocation(postProcessingProgram, name.c_str());

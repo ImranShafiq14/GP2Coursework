@@ -12,6 +12,7 @@ using glm::vec3;
 
 using namespace std;
 
+//Constructor for CameraController - RT
 CameraController::CameraController()
 {
 	attachedCamera = NULL;
@@ -22,11 +23,13 @@ CameraController::CameraController()
 	debugMode = false;
 }
 
+//Deconstructor for CameraController - RT
 CameraController::~CameraController()
 {
 
 }
 
+//Called by program each "frame" - RT
 void CameraController::update()
 {
 	if (attachedCamera)
@@ -95,6 +98,7 @@ void CameraController::update()
 			}
 		}
 		
+		//Moves player back to correct y position when moving from debug to player cameras - RT
 		if (!debugMode)
 		{
 			currentPosition.y = 2.0f;
@@ -109,16 +113,19 @@ void CameraController::update()
 	}
 }
 
+//Sets the Camera to be manipulated - RT
 void CameraController::setCamera(Camera * cam)
 {
 	attachedCamera = cam;
 }
 
+//Toggles debug mode - RT
 void CameraController::toggleDebugMode()
 {
 	debugMode = !debugMode;
 }
 
+//returns the debug mode state - RT
 bool CameraController::getDebugMode()
 {
 	return debugMode;

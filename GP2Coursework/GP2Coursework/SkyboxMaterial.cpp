@@ -2,16 +2,19 @@
 #include "Texture.h"
 #include "Vertex.h"
 
+//Constructor for SkyBoxMaterial - RT
 SkyBoxMaterial::SkyBoxMaterial()
 {
 	m_CubeTexture = 0;
 }
 
+//Deconstructor for SkyBoxMaterial - RT
 SkyBoxMaterial::~SkyBoxMaterial()
 {
 
 }
 
+//Called when program is closing - RT
 void SkyBoxMaterial::destroy()
 {
 	if (m_CubeTexture)
@@ -20,6 +23,7 @@ void SkyBoxMaterial::destroy()
 	}
 }
 
+//Binds the textures of the SkyBox - RT
 void SkyBoxMaterial::bind()
 {
 	glDepthMask(GL_FALSE);
@@ -34,11 +38,13 @@ void SkyBoxMaterial::bind()
 	glVertexAttribPointer(vertexPosLocation, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), NULL);
 }
 
+//Unbinds textures - RT
 void SkyBoxMaterial::unbind()
 {
 	glDepthMask(GL_TRUE);
 }
 
+//Loads cube textures with the 6 sides of the cube passed in as parameters - RT
 void SkyBoxMaterial::loadCubeTexture(const string& filenamePosZ, const string& filenameNegZ, const string& filenamePosX,
 	const string& filenameNegX, const string& filenamePosY, const string& filenameNegY)
 {
@@ -63,6 +69,7 @@ void SkyBoxMaterial::loadCubeTexture(const string& filenamePosZ, const string& f
 
 }
 
+//Returns the cube texture - RT
 GLuint SkyBoxMaterial::getCubeTexture()
 {
 	return m_CubeTexture;
