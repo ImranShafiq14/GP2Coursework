@@ -1,5 +1,12 @@
+GP2 Coursework:
+
+Group Name - The Average Joes
+
+Members:
+
 Imran Shafiq - S1218225
 Ross Taggart - S1221053
+
 
 INSTRUCTIONS:
 
@@ -8,6 +15,7 @@ Press P on the keyboard to toggle debug camera
 When in debug mode, use scroll wheel to manipulate Y axis
 Press P again to go back to player mode
 Press Escape to exit game
+Use the mouse to rotate the camera - move very slowly and slightly to stop camera from going crazy. 
 
 Imran
 
