@@ -17,6 +17,7 @@
 #include "Input.h"
 #include "TextureManager.h"
 #include "PostProcessing.h"
+#include "MeshManager.h"
 
 //header for SDL2 functionality
 #include <gl\glew.h>
@@ -101,6 +102,7 @@ void CleanUp()
 	}
 
 	TextureManager::getManager().clear();
+	MeshManager::getManager().clear();
 	auto iter = displayList.begin();
 	while (iter != displayList.end())
 	{

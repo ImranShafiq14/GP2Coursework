@@ -47,6 +47,9 @@ public:
 	void setLight(Light * light);
 
 	void setParent(GameObject* parent);
+	
+	Component * getComponentByType(const std::string& type);
+	Component * getComponentByName(const std::string& name);
 protected:
 private:
 	std::string m_Name;

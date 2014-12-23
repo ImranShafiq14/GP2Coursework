@@ -67,11 +67,14 @@ void GameObject::destroy()
 	auto iter = m_Components.begin();
 	while (iter != m_Components.end())
 	{
-		(*iter)->destroy();
 		if ((*iter))
 		{
-			delete(*iter);
-			(*iter) = NULL;
+			(*iter)->destroy();
+			if ((*iter)->getUsageCount() == 0)
+			{
+				delete (*iter);
+				(*iter) = NULL;
+			}
 			iter = m_Components.erase(iter);
 		}
 		else
@@ -102,6 +105,7 @@ void GameObject::destroy()
 void GameObject::addComponent(Component * component)
 {
 	component->setParent(this);
+	component->addRef();
 	m_Components.push_back(component);
 }
 
@@ -201,5 +205,19 @@ GameObject* GameObject::getChild(int index)
 	{
 		return NULL;
 	}
+}
+
+Component * GameObject::getComponentByType(const std::string& type)
+{
+	Component *found = NULL;
+	//std::find_if(m_Components.begin(),m_Components.end(),[type](Component &n){return n.getType()==type;});
+	return found;
+}
+
+Component * GameObject::getComponentByName(const std::string& name)
+{
+	Component *found = NULL;
+	//std::find_if(m_Components.begin(),m_Components.end(),[type](Component &n){return n.getType()==type;});
+	return found;
 }
 

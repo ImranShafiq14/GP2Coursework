@@ -90,6 +90,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshManager.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="PostProcessing.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -111,6 +112,7 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshManager.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="PostProcessing.h" />
     <ClInclude Include="Shader.h" />
