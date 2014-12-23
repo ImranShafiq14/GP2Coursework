@@ -493,7 +493,7 @@ void update()
 void initialise()
 {
 	string vsPath = ASSET_PATH + SHADER_PATH + "/passThroughVS.glsl";
-	string fsPath = ASSET_PATH + SHADER_PATH + "/colourFilterPostFS.glsl";
+	string fsPath = ASSET_PATH + SHADER_PATH + "/boxFilterBlurFS.glsl";
 
 	postProcessor.init(WINDOW_WIDTH, WINDOW_HEIGHT, vsPath, fsPath);
 
