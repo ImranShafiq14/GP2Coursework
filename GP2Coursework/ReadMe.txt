@@ -37,11 +37,12 @@ All Skybox classes
 Timer class
 Post Processing
 
-P.S. The following techniques/tasks were implemented but do not work correctly, as a result, these
+P.S. The following techniques/tasks were implemented but do not work correctly, as a result, some of these
 implementations were not committed to the master branch and are contained in seperate branches from the 
 master/Coursework-Submission branches:
 - Post Processing (contained in the 'PostProcessingTest' branch)
 - Mesh Manager (contained in the 'MeshManagerTest' branch)
+- Skybox (contained in master/Coursework-Submission branch, all functionality has been commented out).
 
 
 Each member contributed in finding and fixing bugs in each other's code.
