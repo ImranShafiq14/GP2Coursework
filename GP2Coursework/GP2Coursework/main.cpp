@@ -399,7 +399,7 @@ void loadModels()
 	std::string specularTextures[8] = { "/armoredrecon_spec.png", "/Tank1_S.png", "/Tank2_S.png", "/Tank3_S.png", "/Tank4_S.png", "/Tank5_S.png", "/Tank6_S.png", "/armoredrecon_spec.png" };
 	std::string bumpTextures[8] = { "/armoredrecon_N.png", "/Tank1_N.png", "/Tank2_N.png", "/Tank3_N.png", "/Tank4_N.png", "/Tank5_N.png", "/Tank6_N.png", "/armoredrecon_N.png" };
 	std::string heightTextures[8] = { "/armoredrecon_Height.png", "/Tank1_H.png", "/Tank2_H.png", "/Tank3_H.png", "/Tank4_H.png", "/Tank5_H.png", "/Tank6_H.png", "/armoredrecon_Height.png" };
-	
+
 	for (int i = 0; i < 8; i++)
 	{
 		GameObject * go = loadFBXFromFile(ASSET_PATH + MODEL_PATH + models[i]);
@@ -407,80 +407,104 @@ void loadModels()
 		{
 			Material * material = new Material();
 			material->init();
-			
-			std::string vsPath = ASSET_PATH + SHADER_PATH + "/parallaxMappingVS.glsl";
-			std::string fsPath = ASSET_PATH + SHADER_PATH + "/parallaxMappingFS.glsl";
-			//std::string vsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingVS.glsl";
-			//std::string fsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingFS.glsl";
-			material->loadShader(vsPath, fsPath);
-			
+
+			//std::string vsPath = ASSET_PATH + SHADER_PATH + "/parallaxMappingVS.glsl";
+			//std::string fsPath = ASSET_PATH + SHADER_PATH + "/parallaxMappingFS.glsl";
+			////std::string vsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingVS.glsl";
+			////std::string fsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingFS.glsl";
+			//material->loadShader(vsPath, fsPath);
+
+			if (i == 0) //armoredrecon 1
+			{
+				std::string vsPath = ASSET_PATH + SHADER_PATH + "/parallaxMappingVS.glsl";
+				std::string fsPath = ASSET_PATH + SHADER_PATH + "/parallaxMappingFS.glsl";
+				material->loadShader(vsPath, fsPath);
+				go->getTransform()->setPosition(-5.0f, 0.0f, 20.0f);
+				go->getTransform()->setRotation(0.0f, 150.0f, 0.0f);
+			}
+
+			if (i == 1) //tank 1
+			{
+				std::string vsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingVS.glsl";
+				std::string fsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingFS.glsl";
+				material->loadShader(vsPath, fsPath);
+				go->getTransform()->setPosition(-10.0f, 0.0f, 10.0f);
+				go->getTransform()->setRotation(0.0f, 215.0f, 0.0f);
+			}
+
+			if (i == 2) //tank 2
+			{
+				std::string vsPath = ASSET_PATH + SHADER_PATH + "/parallaxMappingVS.glsl";
+				std::string fsPath = ASSET_PATH + SHADER_PATH + "/parallaxMappingFS.glsl";
+				material->loadShader(vsPath, fsPath);
+				go->getTransform()->setPosition(-10.0f, 0.0f, 0.0f);
+				go->getTransform()->setRotation(0.0f, 180.0f, 0.0f);
+			}
+
+			if (i == 3) //tank 3
+			{
+				std::string vsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingVS.glsl";
+				std::string fsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingFS.glsl";
+				material->loadShader(vsPath, fsPath);
+				go->getTransform()->setPosition(-10.0f, 0.0f, -10.0f);
+				go->getTransform()->setRotation(0.0f, 135.0f, 0.0f);
+			}
+
+			if (i == 4) //tank 4
+			{
+				std::string vsPath = ASSET_PATH + SHADER_PATH + "/parallaxMappingVS.glsl";
+				std::string fsPath = ASSET_PATH + SHADER_PATH + "/parallaxMappingFS.glsl";
+				material->loadShader(vsPath, fsPath);
+				go->getTransform()->setPosition(10.0f, 0.0f, 10.0f);
+				go->getTransform()->setRotation(0.0f, 315.0f, 0.0f);
+			}
+
+			if (i == 5) //tank 5
+			{
+				std::string vsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingVS.glsl";
+				std::string fsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingFS.glsl";
+				material->loadShader(vsPath, fsPath);
+				go->getTransform()->setPosition(10.0f, 0.0f, 0.0f);
+				go->getTransform()->setRotation(0.0f, 0.0f, 0.0f);
+			}
+
+			if (i == 6) //tank 6
+			{
+				std::string vsPath = ASSET_PATH + SHADER_PATH + "/parallaxMappingVS.glsl";
+				std::string fsPath = ASSET_PATH + SHADER_PATH + "/parallaxMappingFS.glsl";
+				material->loadShader(vsPath, fsPath);
+				go->getTransform()->setPosition(10.0f, 0.0f, -10.0f);
+				go->getTransform()->setRotation(0.0f, 45.0f, 0.0f);
+			}
+
+			if (i == 7) //armoredrecon 2
+			{
+				std::string vsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingVS.glsl";
+				std::string fsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingFS.glsl";
+				material->loadShader(vsPath, fsPath);
+				go->getTransform()->setPosition(5.0f, 0.0f, 20.0f);
+				go->getTransform()->setRotation(0.0f, 210.0f, 0.0f);
+			}
+
+
 			std::string diffTexturePath = ASSET_PATH + TEXTURE_PATH + diffuseTextures[i];
 			material->loadDiffuseMap(diffTexturePath);
-			
+
 			std::string specTexturePath = ASSET_PATH + TEXTURE_PATH + specularTextures[i];
 			material->loadSpecularMap(specTexturePath);
-			
+
 			std::string bumpTexturePath = ASSET_PATH + TEXTURE_PATH + bumpTextures[i];
 			material->loadBumpMap(bumpTexturePath);
-			
+
 			std::string heightTexturePath = ASSET_PATH + TEXTURE_PATH + heightTextures[i];
 			material->loadHeightMap(heightTexturePath);
-			
+
 			go->getChild(model)->setMaterial(material);
 		}
 
-		if (i == 0) //armoredrecon 1
-		{
-			go->getTransform()->setPosition(-5.0f, 0.0f, 20.0f);
-			go->getTransform()->setRotation(0.0f, 150.0f, 0.0f);
-		}
-		
-		if (i == 1) //tank 1
-		{
-			go->getTransform()->setPosition(-10.0f, 0.0f, 10.0f);
-			go->getTransform()->setRotation(0.0f, 215.0f, 0.0f);
-		}
-		
-		if (i == 2) //tank 2
-		{
-			go->getTransform()->setPosition(-10.0f, 0.0f, 0.0f);
-			go->getTransform()->setRotation(0.0f, 180.0f, 0.0f);
-		}
-		
-		if (i == 3) //tank 3
-		{
-			go->getTransform()->setPosition(-10.0f, 0.0f, -10.0f);
-			go->getTransform()->setRotation(0.0f, 135.0f, 0.0f);
-		}
-		
-		if (i == 4) //tank 4
-		{
-			go->getTransform()->setPosition(10.0f, 0.0f, 10.0f);
-			go->getTransform()->setRotation(0.0f, 315.0f, 0.0f);
-		}
-		
-		if (i == 5) //tank 5
-		{
-			go->getTransform()->setPosition(10.0f, 0.0f, 0.0f);
-			go->getTransform()->setRotation(0.0f, 0.0f, 0.0f);
-		}
-		
-		if (i == 6) //tank 6
-		{
-			go->getTransform()->setPosition(10.0f, 0.0f, -10.0f);
-			go->getTransform()->setRotation(0.0f, 45.0f, 0.0f);
-		}
-
-		if (i == 7) //armoredrecon 2
-		{
-			go->getTransform()->setPosition(5.0f, 0.0f, 20.0f);
-			go->getTransform()->setRotation(0.0f, 210.0f, 0.0f);
-		}
-		
 		displayList.push_back(go);
 	}
 }
-
 
 //Function to update game state
 void update()
