@@ -17,11 +17,17 @@ Press P again to go back to player mode
 Press Escape to exit game
 Use the mouse to rotate the camera - move very slowly and slightly to stop camera from going crazy. 
 
+Member Roles:
+
 Imran
 
 Model loading
 Parallax Mapping
 Texture/Mesh Manager
+Initial set up of project
+Design side of project(e.g. laying out/designing scene/level etc.)
+Finding extra required models such as Ground and Helicopter. 
+Conversion of Ground and Helicopter models into FBX models.
 
 Ross
 
